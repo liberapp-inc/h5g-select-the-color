@@ -29,11 +29,6 @@ var Ball = (function (_super) {
         this.shape.graphics.endFill();
         GameObject.display.addChild(this.shape);
     };
-    /*    updateDrowShape(){
-            this.shape.x = this.body.position[0];
-            this.shape.y = this.body.position[1];
-            GameObject.display.addChild(this.shape);
-        }*/
     Ball.prototype.updateContent = function () {
     };
     Ball.I = null; // singleton instance
@@ -44,8 +39,9 @@ var PhysicsBall = (function (_super) {
     __extends(PhysicsBall, _super);
     function PhysicsBall(x, y, radius) {
         var _this = _super.call(this) || this;
+        //static I:PhysicsBall = null;   // singleton instance
         _this.radius = null;
-        PhysicsBall.I = _this;
+        //PhysicsBall.I = this;
         _this.setBody(x, y, radius);
         _this.setShape(x, y, radius);
         return _this;
@@ -70,14 +66,6 @@ var PhysicsBall = (function (_super) {
         this.shape.graphics.endFill();
         GameObject.display.addChild(this.shape);
     };
-    /*    updateDrowShape(x: number, y:number, radius: number){
-            this.shape.x = x;
-            this.shape.y = y;
-            GameObject.display.addChild(this.shape);
-        }*/
-    PhysicsBall.prototype.updateContent = function () { };
-    PhysicsBall.prototype.collisionEvent = function () { };
-    PhysicsBall.I = null; // singleton instance
     return PhysicsBall;
 }(PhysicsObject));
 __reflect(PhysicsBall.prototype, "PhysicsBall");

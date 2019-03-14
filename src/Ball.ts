@@ -27,11 +27,7 @@ class Ball extends GameObject{
         
     }
 
-/*    updateDrowShape(){
-        this.shape.x = this.body.position[0];
-        this.shape.y = this.body.position[1];
-        GameObject.display.addChild(this.shape);
-    }*/
+
 
 
     updateContent(){
@@ -41,15 +37,15 @@ class Ball extends GameObject{
 
 }
 
-class PhysicsBall extends PhysicsObject{
+abstract class PhysicsBall extends PhysicsObject{
 
-    static I:PhysicsBall = null;   // singleton instance
+    //static I:PhysicsBall = null;   // singleton instance
     private radius :number =null;
 
     constructor(x : number, y:number, radius:number) {
         super();
 
-        PhysicsBall.I = this;
+        //PhysicsBall.I = this;
         this.setBody(x, y, radius);
         this.setShape(x, y, radius);
 
@@ -88,8 +84,8 @@ class PhysicsBall extends PhysicsObject{
     }*/
 
 
-    updateContent(){}
-    collisionEvent(){}
+/*    updateContent(){}
+    collisionEvent(){}*/
 
 
 }

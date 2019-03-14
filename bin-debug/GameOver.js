@@ -14,10 +14,18 @@ var GameOver = (function (_super) {
         var _this = _super.call(this) || this;
         _this.textGameOver = null;
         _this.textScore = null;
-        _this.textGameOver = Utility.myText(0, 0, "GAME OVER", 100, 0.5, 0x0080ff, true);
+        _this.textColor = 0x00FF3B;
+        _this.textGameOver = Util.myText(Game.width / 2, Game.height / 2 - 50, "GAME OVER", 100, 0.5, _this.textColor, true);
+        _this.textGameOver.anchorOffsetX = _this.textGameOver.width / 2;
+        _this.textGameOver.anchorOffsetY = _this.textGameOver.height / 2;
         GameObject.display.addChild(_this.textGameOver);
-        _this.textScore = Utility.myText(0, 0, "GAME OVER", 100, 0.5, 0x0080ff, true);
+        _this.textScore = Util.myText(Game.width / 2, Game.height / 2 + 50, "SCORE : " + Score.I.score, 100, 0.5, _this.textColor, true);
+        _this.textScore.anchorOffsetX = _this.textScore.width / 2;
+        _this.textScore.anchorOffsetY = _this.textScore.height / 2;
         GameObject.display.addChild(_this.textScore);
+        if (Score.I.score >= Score.I.bestScore) {
+            window.localStorage.setItem("bestScore", Score.I.score.toFixed()); // string
+        }
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, function (e) { return _this.tap(e); }, _this);
         return _this;
     }
@@ -27,7 +35,10 @@ var GameOver = (function (_super) {
         GameObject.display.removeChild(this.textScore);
         this.textScore = null;
     };
-    GameOver.prototype.updateContent = function () { };
+    GameOver.prototype.updateContent = function () {
+        GameObject.display.addChild(this.textGameOver);
+        GameObject.display.addChild(this.textScore);
+    };
     GameOver.prototype.tap = function (e) {
         GameObject.transit = Game.init;
         this.destroy();
