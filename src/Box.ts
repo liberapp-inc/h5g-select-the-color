@@ -1,7 +1,18 @@
 class Box extends GameObject{
+
+    protected width :number;
+    protected height :number;
+    protected x : number;
+    protected y : number;
+    protected color : number;
     
     constructor(x : number, y : number, width : number, height : number, color:number) {
         super();
+        this.x = x;
+        this.y = y;
+        this.width = width ;
+        this.height =height;
+        this.color = color;
         this.setShape(x, y, width, height, color);
 
 
@@ -34,8 +45,7 @@ abstract class PhysicsBox extends PhysicsObject{
     protected x : number;
     protected y : number;
     protected color : number;
-    static boxMove : boolean = false;
-    static blockdownSpeed : number = 3;
+
     
     constructor(x : number, y : number, width : number, height : number, color:number) {
         super();
@@ -78,7 +88,16 @@ abstract class PhysicsBox extends PhysicsObject{
         
     }
 
-/*    updateContent(){}
-    collisionEvent(){}*/
 
+
+}
+
+class MyBox extends Box{
+
+    static myBox :MyBox[] = [];
+
+    constructor(x : number, y : number, width : number, height : number, color:number) {
+        super(x, y, width, height, color);
+        MyBox.myBox.push(this);
+    }
 }

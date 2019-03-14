@@ -12,6 +12,11 @@ var Box = (function (_super) {
     __extends(Box, _super);
     function Box(x, y, width, height, color) {
         var _this = _super.call(this) || this;
+        _this.x = x;
+        _this.y = y;
+        _this.width = width;
+        _this.height = height;
+        _this.color = color;
         _this.setShape(x, y, width, height, color);
         return _this;
     }
@@ -66,9 +71,18 @@ var PhysicsBox = (function (_super) {
         this.shape.graphics.endFill();
         GameObject.display.addChild(this.shape);
     };
-    PhysicsBox.boxMove = false;
-    PhysicsBox.blockdownSpeed = 3;
     return PhysicsBox;
 }(PhysicsObject));
 __reflect(PhysicsBox.prototype, "PhysicsBox");
+var MyBox = (function (_super) {
+    __extends(MyBox, _super);
+    function MyBox(x, y, width, height, color) {
+        var _this = _super.call(this, x, y, width, height, color) || this;
+        MyBox.myBox.push(_this);
+        return _this;
+    }
+    MyBox.myBox = [];
+    return MyBox;
+}(Box));
+__reflect(MyBox.prototype, "MyBox");
 //# sourceMappingURL=Box.js.map

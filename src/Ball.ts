@@ -6,7 +6,7 @@ class Ball extends GameObject{
     constructor(x : number, y:number, radius:number) {
         super();
 
-        Ball.I = this;
+        //Ball.I = this;
         this.setShape(x, y, radius);
 
     }
@@ -77,16 +77,13 @@ abstract class PhysicsBall extends PhysicsObject{
         
     }
 
-/*    updateDrowShape(x: number, y:number, radius: number){
-        this.shape.x = x;
-        this.shape.y = y;
-        GameObject.display.addChild(this.shape);
-    }*/
-
-
-/*    updateContent(){}
-    collisionEvent(){}*/
-
 
 }
 
+class MyBall extends Ball{
+    constructor(x : number, y:number, radius:number) {
+        super(x, y, radius);
+        Ball.I = this;
+
+    }
+}

@@ -17,6 +17,7 @@ var Score = (function (_super) {
         _this.text = null;
         _this.textBest = null;
         _this.textColor = 0x00FF3B;
+        _this.textColor = Util.color(0, 255, 0);
         Score.I = _this;
         _this.score = 0;
         _this.text = Util.myText(0, 0, "SCORE : 0", 100, 0.5, _this.textColor, true);

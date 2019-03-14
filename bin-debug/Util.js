@@ -22,16 +22,32 @@ var Util = (function () {
             value = max;
         return value;
     };
+    //rgbを16進数へ変換
     Util.color = function (r, g, b) {
-        return (Math.floor(r * 0xff) * 0x010000 + Math.floor(g * 0xff) * 0x0100 + Math.floor(b * 0xff));
+        //小数点の切り捨て
+        var r16 = r.toFixed(0);
+        var g16 = g.toFixed(0);
+        var b16 = b.toFixed(0);
+        //16進数へ変換
+        r16 = r.toString(16);
+        g16 = g.toString(16);
+        b16 = b.toString(16);
+        //r = 0だと r16 =0なので00にするために'00'加算
+        r16 = ('00' + r16).slice(-2);
+        g16 = ('00' + g16).slice(-2);
+        b16 = ('00' + b16).slice(-2);
+        //色コードへ変換
+        var code = parseInt(("0x" + r16 + g16 + b16), 16);
+        return code;
     };
-    Util.colorLerp = function (c0, c1, rate01) {
-        var rate10 = 1 - rate01;
-        var color = (((c0 & 0xff0000) * rate10 + (c1 & 0xff0000) * rate01) & 0xff0000) +
-            (((c0 & 0xff00) * rate10 + (c1 & 0xff00) * rate01) & 0xff00) +
-            (((c0 & 0xff) * rate10 + (c1 & 0xff) * rate01) & 0xff);
-        return color;
-    };
+    /*    static colorLerp( c0:number, c1:number, rate01:number):number {
+            let rate10 = 1 - rate01;
+            let color =
+                ( ((c0&0xff0000) * rate10 + (c1&0xff0000) * rate01) & 0xff0000 ) +
+                ( ((c0&0xff00) * rate10 + (c1&0xff00) * rate01) & 0xff00 ) +
+                ( ((c0&0xff) * rate10 + (c1&0xff) * rate01) & 0xff );
+            return color;
+        }*/
     Util.myText = function (x, y, text, size, ratio, color, bold) {
         var tf = new egret.TextField();
         tf.x = x;

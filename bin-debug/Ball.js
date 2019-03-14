@@ -13,7 +13,7 @@ var Ball = (function (_super) {
     function Ball(x, y, radius) {
         var _this = _super.call(this) || this;
         _this.radius = null;
-        Ball.I = _this;
+        //Ball.I = this;
         _this.setShape(x, y, radius);
         return _this;
     }
@@ -69,4 +69,14 @@ var PhysicsBall = (function (_super) {
     return PhysicsBall;
 }(PhysicsObject));
 __reflect(PhysicsBall.prototype, "PhysicsBall");
+var MyBall = (function (_super) {
+    __extends(MyBall, _super);
+    function MyBall(x, y, radius) {
+        var _this = _super.call(this, x, y, radius) || this;
+        Ball.I = _this;
+        return _this;
+    }
+    return MyBall;
+}(Ball));
+__reflect(MyBall.prototype, "MyBall");
 //# sourceMappingURL=Ball.js.map
