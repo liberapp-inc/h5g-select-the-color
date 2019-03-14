@@ -8,7 +8,7 @@ class Score extends GameObject{
     text:egret.TextField = null;
     textBest:egret.TextField = null;
 
-    textColor : number = 0x00FF3B;
+    textColor : number;
 
     constructor() {
         super();

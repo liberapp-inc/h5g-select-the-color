@@ -30,10 +30,9 @@ var Box = (function (_super) {
         this.shape.graphics.beginFill(color);
         this.shape.graphics.drawRect(0, 0, width, height);
         this.shape.graphics.endFill();
+        this.shape.touchEnabled = true;
         GameObject.display.addChild(this.shape);
     };
-    Box.prototype.updateContent = function () { };
-    ;
     return Box;
 }(GameObject));
 __reflect(Box.prototype, "Box");
@@ -78,9 +77,67 @@ var MyBox = (function (_super) {
     __extends(MyBox, _super);
     function MyBox(x, y, width, height, color) {
         var _this = _super.call(this, x, y, width, height, color) || this;
+        _this.correctFlag = false;
+        _this.animationFlag = false;
+        _this.animationStopPosY = 0;
+        _this.correctTextField = null;
+        _this.textColor = null;
         MyBox.myBox.push(_this);
+        //タッチした時用のテキスト
+        _this.textColor = Util.color(0, 255, 0);
+        _this.correctTextField = Util.myText(x, y, "", 100, 0.5, _this.textColor, true);
+        _this.correctTextField.x += width / 2;
+        _this.correctTextField.y += height / 2;
+        _this.correctTextField.anchorOffsetX = _this.correctTextField.width / 2;
+        _this.correctTextField.anchorOffsetY = _this.correctTextField.height / 2;
+        _this.correctTextField.alpha = 0;
+        GameObject.display.addChild(_this.correctTextField);
+        _this.animationStopPosY = _this.correctTextField.y - 40;
+        _this.correctFlag = false;
+        //タッチイベントの付与
+        _this.shape.once(egret.TouchEvent.TOUCH_BEGIN, _this.touch, _this);
         return _this;
+        //タッチイベント
+        /*        if(GameObject.display.hasEventListener(egret.TouchEvent.TOUCH_BEGIN) == false)
+                    GameObject.display.addEventListener(egret.TouchEvent.TOUCH_BEGIN, (e: egret.TouchEvent) => this.touch(e), false);*/
     }
+    MyBox.prototype.touch = function (e) {
+        if (this.correctFlag == true) {
+            this.correctTextField.text = "Correct!!";
+        }
+        else {
+            this.correctTextField.text = "Miss...";
+        }
+        this.correctTextField.anchorOffsetX = this.correctTextField.width / 2;
+        this.correctTextField.anchorOffsetY = this.correctTextField.height / 2;
+        this.animationFlag = true;
+    };
+    MyBox.prototype.animation = function () {
+        if (this.animationFlag == true) {
+            if (this.correctTextField.y > this.animationStopPosY) {
+                this.correctTextField.y -= 2;
+                //テキストをフェードイン
+                if (this.correctTextField.alpha < 1) {
+                    this.correctTextField.alpha += 0.1;
+                }
+            }
+            else {
+                this.correctTextField.y -= 2;
+                //テキストをフェードアウト
+                if (this.correctTextField.alpha > 0) {
+                    this.correctTextField.alpha -= 0.1;
+                }
+                else {
+                    this.correctTextField.alpha = 0;
+                    this.animationFlag = false;
+                }
+            }
+        }
+    };
+    MyBox.prototype.updateContent = function () {
+        this.animation();
+    };
+    ;
     MyBox.myBox = [];
     return MyBox;
 }(Box));

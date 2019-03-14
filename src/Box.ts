@@ -1,4 +1,4 @@
-class Box extends GameObject{
+abstract class Box extends GameObject{
 
     protected width :number;
     protected height :number;
@@ -29,11 +29,14 @@ class Box extends GameObject{
         this.shape.graphics.beginFill(color);
         this.shape.graphics.drawRect(0, 0, width , height);
         this.shape.graphics.endFill();
+        this.shape.touchEnabled = true;
         GameObject.display.addChild(this.shape);
+
+
         
     }
 
-    updateContent(){};
+    //updateContent(){};
 
 }
 
@@ -95,9 +98,84 @@ abstract class PhysicsBox extends PhysicsObject{
 class MyBox extends Box{
 
     static myBox :MyBox[] = [];
+    private correctFlag : boolean = false;
+    private animationFlag : boolean = false;
+    private animationStopPosY : number = 0;
 
+    private correctTextField:egret.TextField = null;
+    private textColor : number = null;
     constructor(x : number, y : number, width : number, height : number, color:number) {
         super(x, y, width, height, color);
         MyBox.myBox.push(this);
+
+        //タッチした時用のテキスト
+        this.textColor = Util.color(0,255,0);
+        this.correctTextField = Util.myText(x, y , "", 100, 0.5, this.textColor, true);
+        this.correctTextField.x += width/2;
+        this.correctTextField.y += height/2;
+        this.correctTextField.anchorOffsetX = this.correctTextField.width /2;
+        this.correctTextField.anchorOffsetY = this.correctTextField.height/2;
+        this.correctTextField.alpha = 0;
+        GameObject.display.addChild( this.correctTextField );
+
+        this.animationStopPosY = this.correctTextField.y - 40;
+
+        this.correctFlag = false;
+
+
+        //タッチイベントの付与
+        this.shape.once(egret.TouchEvent.TOUCH_BEGIN, this.touch, this);
+        //タッチイベント
+/*        if(GameObject.display.hasEventListener(egret.TouchEvent.TOUCH_BEGIN) == false)
+            GameObject.display.addEventListener(egret.TouchEvent.TOUCH_BEGIN, (e: egret.TouchEvent) => this.touch(e), false);*/
     }
+
+    touch(e : egret.TouchEvent){
+
+        if(this.correctFlag == true){
+            this.correctTextField.text = "Correct!!"
+
+        }
+        else{
+            this.correctTextField.text = "Miss..."
+
+        }
+            this.correctTextField.anchorOffsetX = this.correctTextField.width /2;
+            this.correctTextField.anchorOffsetY = this.correctTextField.height/2;
+            this.animationFlag = true;
+
+
+
+    }
+
+    animation(){
+
+        if(this.animationFlag == true){
+
+            if(this.correctTextField.y > this.animationStopPosY){
+                this.correctTextField.y -= 2;
+                //テキストをフェードイン
+                if(this.correctTextField.alpha < 1){
+                    this.correctTextField.alpha += 0.1;
+                }
+            }else{
+                this.correctTextField.y -= 2;
+                //テキストをフェードアウト
+                if(this.correctTextField.alpha > 0){
+                    this.correctTextField.alpha -= 0.1;
+                }else{
+                    this.correctTextField.alpha = 0;
+                    this.animationFlag = false;
+                }
+                
+            }
+        }
+
+    }
+
+    updateContent(){
+        this.animation();
+    };
+
+
 }
