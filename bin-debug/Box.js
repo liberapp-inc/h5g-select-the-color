@@ -93,7 +93,7 @@ var MyBox = (function (_super) {
         _this.correctTextField.alpha = 0;
         GameObject.display.addChild(_this.correctTextField);
         _this.animationStopPosY = _this.correctTextField.y - 40;
-        _this.correctFlag = false;
+        //this.correctFlag = false;
         //タッチイベントの付与
         _this.shape.once(egret.TouchEvent.TOUCH_BEGIN, _this.touch, _this);
         return _this;

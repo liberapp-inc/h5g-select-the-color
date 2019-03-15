@@ -98,12 +98,15 @@ abstract class PhysicsBox extends PhysicsObject{
 class MyBox extends Box{
 
     static myBox :MyBox[] = [];
-    private correctFlag : boolean = false;
+    public correctFlag : boolean = false;
     private animationFlag : boolean = false;
     private animationStopPosY : number = 0;
 
+    static boxColor : number;
+
     private correctTextField:egret.TextField = null;
     private textColor : number = null;
+
     constructor(x : number, y : number, width : number, height : number, color:number) {
         super(x, y, width, height, color);
         MyBox.myBox.push(this);
@@ -120,7 +123,7 @@ class MyBox extends Box{
 
         this.animationStopPosY = this.correctTextField.y - 40;
 
-        this.correctFlag = false;
+        //this.correctFlag = false;
 
 
         //タッチイベントの付与
@@ -134,17 +137,15 @@ class MyBox extends Box{
 
         if(this.correctFlag == true){
             this.correctTextField.text = "Correct!!"
-
         }
         else{
             this.correctTextField.text = "Miss..."
 
         }
-            this.correctTextField.anchorOffsetX = this.correctTextField.width /2;
-            this.correctTextField.anchorOffsetY = this.correctTextField.height/2;
-            this.animationFlag = true;
 
-
+        this.correctTextField.anchorOffsetX = this.correctTextField.width /2;
+        this.correctTextField.anchorOffsetY = this.correctTextField.height/2;
+        this.animationFlag = true;
 
     }
 

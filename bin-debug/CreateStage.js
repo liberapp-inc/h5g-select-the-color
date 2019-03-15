@@ -12,19 +12,31 @@ var CreateStage = (function (_super) {
     __extends(CreateStage, _super);
     function CreateStage() {
         var _this = _super.call(this) || this;
-        _this.panel = [];
-        _this.panelColor = null;
-        _this.panelColor = Util.color(0, 0, 255);
+        _this.box = [];
+        _this.boxColor = null;
         _this.arrangePanel();
         return _this;
     }
     CreateStage.prototype.arrangePanel = function () {
         var moveX = Game.width / 10;
         var moveY = Game.height / 4;
-        for (var i = 0; i < 3; i++) {
-            this.panel[i] = [];
-            for (var j = 0; j < 4; j++) {
-                this.panel[i][j] = new MyBox(i * 200 + moveX, j * 200 + moveY, 180, 180, this.panelColor);
+        var correctBoxNumberI = Util.randomInt(0, 3);
+        var correctBoxNumberJ = Util.randomInt(0, 2);
+        var r = Util.randomInt(20, 235);
+        var g = Util.randomInt(20, 235);
+        var b = Util.randomInt(20, 235);
+        MyBox.boxColor = Util.color(r, g, b);
+        var correctBoxColor = Util.color(r - 50, g - 50, b - 50);
+        for (var i = 0; i < 4; i++) {
+            this.box[i] = [];
+            for (var j = 0; j < 3; j++) {
+                if (i == correctBoxNumberI && j == correctBoxNumberJ) {
+                    this.box[i][j] = new MyBox(j * 200 + moveX, i * 200 + moveY, 180, 180, correctBoxColor);
+                    this.box[i][j].correctFlag = true;
+                }
+                else {
+                    this.box[i][j] = new MyBox(j * 200 + moveX, i * 200 + moveY, 180, 180, MyBox.boxColor);
+                }
             }
         }
     };
