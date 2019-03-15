@@ -159,19 +159,35 @@ class MyBox extends Box{
                 if(this.correctTextField.alpha < 1){
                     this.correctTextField.alpha += 0.1;
                 }
-            }else{
+            }
+            else{
                 this.correctTextField.y -= 2;
                 //テキストをフェードアウト
                 if(this.correctTextField.alpha > 0){
                     this.correctTextField.alpha -= 0.1;
-                }else{
+                }
+                else{
                     this.correctTextField.alpha = 0;
                     this.animationFlag = false;
+
+                    //正解パネルだったら新しいパネルを設置
+                    if(this.correctFlag == true){
+                        CreateStage.I.arrangePanel();
+                        CreateStage.box = [];
+                    }
                 }
                 
             }
         }
 
+    }
+
+    changeColor(color:number){
+        this.shape.graphics.beginFill(color);
+        this.shape.graphics.drawRect(0, 0, this.width , this.height);
+        this.shape.graphics.endFill();
+        this.shape.touchEnabled = true;
+        GameObject.display.addChild(this.shape);
     }
 
     updateContent(){

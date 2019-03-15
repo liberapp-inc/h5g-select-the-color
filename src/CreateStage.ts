@@ -1,9 +1,11 @@
 class CreateStage extends GameObject{
 
-    box : MyBox[][] = [];
+    static I : CreateStage = null;
+    static box : MyBox[][] = [];
     boxColor : number = null;
     constructor(){
         super();
+        CreateStage.I = this;
         this.arrangePanel();
     }
 
@@ -25,18 +27,19 @@ class CreateStage extends GameObject{
 
         for(let i = 0; i < 4; i++){
 
-            this.box[i] = [];
+            CreateStage.box[i] = [];
             for(let j = 0; j < 3; j++){
 
 
                 if(i == correctBoxNumberI && j == correctBoxNumberJ){
-                    this.box[i][j] = new MyBox(j*200 + moveX , i*200 + moveY, 180, 180, correctBoxColor);
-                    this.box[i][j].correctFlag = true;
+                    CreateStage.box[i][j] = new MyBox(j*200 + moveX , i*200 + moveY, 180, 180, correctBoxColor);
+                    CreateStage.box[i][j].correctFlag = true;
+
                     
                     
                 }else{
 
-                    this.box[i][j] = new MyBox(j*200 + moveX , i*200 + moveY, 180, 180, MyBox.boxColor);
+                    CreateStage.box[i][j] = new MyBox(j*200 + moveX , i*200 + moveY, 180, 180, MyBox.boxColor);
                 }
 
             }

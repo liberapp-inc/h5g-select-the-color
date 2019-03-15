@@ -104,6 +104,8 @@ var MyBox = (function (_super) {
     MyBox.prototype.touch = function (e) {
         if (this.correctFlag == true) {
             this.correctTextField.text = "Correct!!";
+            CreateStage.I.arrangePanel();
+            CreateStage.box = [];
         }
         else {
             this.correctTextField.text = "Miss...";
@@ -130,9 +132,21 @@ var MyBox = (function (_super) {
                 else {
                     this.correctTextField.alpha = 0;
                     this.animationFlag = false;
+                    //正解パネルだったら新しいパネルを設置
+                    if (this.correctFlag == true) {
+                        /*                        CreateStage.I.arrangePanel();
+                                                CreateStage.box = [];*/
+                    }
                 }
             }
         }
+    };
+    MyBox.prototype.changeColor = function (color) {
+        this.shape.graphics.beginFill(color);
+        this.shape.graphics.drawRect(0, 0, this.width, this.height);
+        this.shape.graphics.endFill();
+        this.shape.touchEnabled = true;
+        GameObject.display.addChild(this.shape);
     };
     MyBox.prototype.updateContent = function () {
         this.animation();
