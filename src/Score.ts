@@ -3,6 +3,8 @@ class Score extends GameObject{
     static I:Score = null;   // singleton instance
 
     score:number = 0;
+    combo : number = 0;
+    comboFlag : boolean = false;
 
     bestScore:number = 0;
     text:egret.TextField = null;
@@ -30,11 +32,12 @@ class Score extends GameObject{
         GameObject.display.addChild( this.textBest );
     }
     
-    onDestroy() {
+    addDestroyMethod() {
         GameObject.display.removeChild( this.text );
         this.text = null;
         GameObject.display.removeChild( this.textBest );
         this.textBest = null;
+        this.score = 0;
     }
 
     updateContent() {
@@ -46,7 +49,16 @@ class Score extends GameObject{
     }
 
     addScore(){
-        this.score += 1;
+        if(CreateStage.startFlag == true){
+            this.score += 1;
+            if(this.comboFlag){
+                this.combo++;
+                this.score += this.combo;
+                
+            }
+            this.comboFlag =true;
+
+        }
         
     }
 

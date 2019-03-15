@@ -13,6 +13,8 @@ var Score = (function (_super) {
     function Score() {
         var _this = _super.call(this) || this;
         _this.score = 0;
+        _this.combo = 0;
+        _this.comboFlag = false;
         _this.bestScore = 0;
         _this.text = null;
         _this.textBest = null;
@@ -31,11 +33,12 @@ var Score = (function (_super) {
         GameObject.display.addChild(_this.textBest);
         return _this;
     }
-    Score.prototype.onDestroy = function () {
+    Score.prototype.addDestroyMethod = function () {
         GameObject.display.removeChild(this.text);
         this.text = null;
         GameObject.display.removeChild(this.textBest);
         this.textBest = null;
+        this.score = 0;
     };
     Score.prototype.updateContent = function () {
         this.text.text = "SCORE : " + this.score.toFixed();
@@ -45,7 +48,14 @@ var Score = (function (_super) {
         }
     };
     Score.prototype.addScore = function () {
-        this.score += 1;
+        if (CreateStage.startFlag == true) {
+            this.score += 1;
+            if (this.comboFlag) {
+                this.combo++;
+                this.score += this.combo;
+            }
+            this.comboFlag = true;
+        }
     };
     Score.I = null; // singleton instance
     return Score;

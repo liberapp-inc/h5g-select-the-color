@@ -17,7 +17,7 @@ var Main = (function (_super) {
     }
     Main.prototype.addToStage = function () {
         GameObject.initial(this.stage);
-        MainCamera.initial(this.stage);
+        Util.init(this);
         Game.init();
         egret.startTick(this.tickLoop, this);
     };
@@ -38,6 +38,8 @@ var Game = (function () {
         new Background();
         new CreateStage();
         new Score();
+        new Time();
+        new Discription();
     };
     return Game;
 }());

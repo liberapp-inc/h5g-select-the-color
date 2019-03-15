@@ -24,7 +24,7 @@ class GameOver extends GameObject{
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, (e: egret.TouchEvent) => this.tap(e), this);
     }
 
-    onDestroy() {
+    addDestroyMethod() {
         GameObject.display.removeChild( this.textGameOver );
         this.textGameOver = null;
         GameObject.display.removeChild( this.textScore );

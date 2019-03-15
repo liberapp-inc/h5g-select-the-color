@@ -4,10 +4,13 @@ class Util{
 
     public static height: number;
     public static width: number;
+    public static ui : eui.UILayer;
 
     static init( eui:eui.UILayer ) {
         this.height = eui.stage.stageHeight;
         this.width  = eui.stage.stageWidth;
+        this.ui = eui;
+        
     }
 
     static random(min:number, max:number):number {

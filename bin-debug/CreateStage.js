@@ -20,13 +20,21 @@ var CreateStage = (function (_super) {
     CreateStage.prototype.arrangePanel = function () {
         var moveX = Game.width / 10;
         var moveY = Game.height / 4;
+        //correctPanel番号を設定
         var correctBoxNumberI = Util.randomInt(0, 3);
         var correctBoxNumberJ = Util.randomInt(0, 2);
-        var r = Util.randomInt(20, 235);
-        var g = Util.randomInt(20, 235);
-        var b = Util.randomInt(20, 235);
+        var r = Util.randomInt(50, 200);
+        var g = Util.randomInt(50, 200);
+        var b = Util.randomInt(50, 200);
         MyBox.boxColor = Util.color(r, g, b);
-        var correctBoxColor = Util.color(r - 50, g - 50, b - 50);
+        var sign = Util.randomInt(0, 1);
+        if (sign == 0) {
+            sign = 1;
+        }
+        else {
+            sign = -1;
+        }
+        var correctBoxColor = Util.color(r + CreateStage.lightAndDark * sign, g + CreateStage.lightAndDark * sign, b + CreateStage.lightAndDark * sign);
         for (var i = 0; i < 4; i++) {
             CreateStage.box[i] = [];
             for (var j = 0; j < 3; j++) {
@@ -40,9 +48,14 @@ var CreateStage = (function (_super) {
             }
         }
     };
+    CreateStage.prototype.addDestroyMethod = function () {
+        CreateStage.startFlag = false;
+    };
     CreateStage.prototype.updateContent = function () { };
     CreateStage.I = null;
     CreateStage.box = [];
+    CreateStage.lightAndDark = 50;
+    CreateStage.startFlag = false;
     return CreateStage;
 }(GameObject));
 __reflect(CreateStage.prototype, "CreateStage");

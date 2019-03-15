@@ -8,6 +8,7 @@ var Util = (function () {
     Util.init = function (eui) {
         this.height = eui.stage.stageHeight;
         this.width = eui.stage.stageWidth;
+        this.ui = eui;
     };
     Util.random = function (min, max) {
         return min + Math.random() * (max - min);

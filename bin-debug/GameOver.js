@@ -29,7 +29,7 @@ var GameOver = (function (_super) {
         GameObject.display.once(egret.TouchEvent.TOUCH_TAP, function (e) { return _this.tap(e); }, _this);
         return _this;
     }
-    GameOver.prototype.onDestroy = function () {
+    GameOver.prototype.addDestroyMethod = function () {
         GameObject.display.removeChild(this.textGameOver);
         this.textGameOver = null;
         GameObject.display.removeChild(this.textScore);
