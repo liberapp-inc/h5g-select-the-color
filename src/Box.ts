@@ -109,6 +109,8 @@ class MyBox extends Box{
 
     private textColor : number = null;
 
+    private oldFlag :boolean = false;
+
     constructor(x : number, y : number, width : number, height : number, color:number) {
         super(x, y, width, height, color);
         MyBox.myBox.push(this);
@@ -142,18 +144,20 @@ class MyBox extends Box{
 
     }
 
-    async touch(e : egret.TouchEvent){
+    touch(e : egret.TouchEvent){
 
         //タイトル画面
         if(CreateStage.I.startFlag == false){
             if(this.correctFlag ==true){
-               await MyBox.myBox.forEach(obj => {
-                    obj.destroy();
-                });
                 CreateStage.box = [];
                 CreateStage.I.arrangePanel();
                 //Startの表示
                 Discription.I.countFlag = true;
+
+                //oldFlagをつけて、テキストのフェードアウトが終わってから削除
+                MyBox.myBox.forEach(obj => {
+                    this.oldFlag = true;
+                });
 
             }
             
@@ -172,13 +176,11 @@ class MyBox extends Box{
                     CreateStage.lightAndDark -= 1;
                 }
                 
-                //パネルのshapeのみを削除。イベントは残っている可能性あり。
-                await MyBox.myBox.forEach(obj => {
-                    obj.destroy();
-                   
+                //oldFlagをつけて、テキストのフェードアウトが終わってから削除
+                MyBox.myBox.forEach(obj => {
+                    this.oldFlag = true;
                 });
 
-                MyBox.myBox= [];
                 CreateStage.box = [];
                 CreateStage.I.arrangePanel();
                 //correct エフェクトを最前面に出す
@@ -197,13 +199,15 @@ class MyBox extends Box{
             this.correctTextField.anchorOffsetY = this.correctTextField.height/2;
             this.comboTextField.anchorOffsetX = this.comboTextField.width /2;
             this.comboTextField.anchorOffsetY = this.comboTextField.height/2;
-            this.animationFlag = true;
+
+            //テキストアニメーション起動
+            //this.animationFlag = true;
         }
 
 
     }
 
-    animation(){
+    async animation(){
 
         if(this.animationFlag == true){
 
@@ -227,7 +231,16 @@ class MyBox extends Box{
                 else{//テキストがフェードアウト完了したとき
                     this.correctTextField.alpha = 0;
                     this.comboTextField.alpha = 0;
+
                     this.animationFlag = false;
+                    await MyBox.myBox.forEach(obj => {
+                        if(obj.oldFlag){
+                            obj.comboTextField.text = null;
+                            obj.correctTextField.text=null;
+                            obj.destroy();
+                        }
+                    });
+                    MyBox.myBox= [];
 
                 }
                 

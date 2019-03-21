@@ -118,6 +118,7 @@ var MyBox = (function (_super) {
         _this.correctTextField = null;
         _this.comboTextField = null;
         _this.textColor = null;
+        _this.oldFlag = false;
         MyBox.myBox.push(_this);
         //タッチした時用のテキスト
         _this.textColor = Util.color(0, 255, 0);
@@ -143,96 +144,99 @@ var MyBox = (function (_super) {
         return _this;
     }
     MyBox.prototype.touch = function (e) {
+        var _this = this;
+        //タイトル画面
+        if (CreateStage.I.startFlag == false) {
+            if (this.correctFlag == true) {
+                CreateStage.box = [];
+                CreateStage.I.arrangePanel();
+                //Startの表示
+                Discription.I.countFlag = true;
+                //oldFlagをつけて、テキストのフェードアウトが終わってから削除
+                MyBox.myBox.forEach(function (obj) {
+                    _this.oldFlag = true;
+                });
+            }
+        }
+        else if (CreateStage.I.startFlag == true && CreateStage.I.gameOverFlag == false) {
+            if (this.correctFlag == true) {
+                Score.I.addScore();
+                this.correctTextField.text = "Correct!!";
+                if (Score.I.combo > 0) {
+                    this.comboTextField.text = "Combo :" + Score.I.combo.toString();
+                }
+                else {
+                    this.comboTextField.text = "";
+                }
+                if (CreateStage.lightAndDark > 15) {
+                    CreateStage.lightAndDark -= 1;
+                }
+                //oldFlagをつけて、テキストのフェードアウトが終わってから削除
+                MyBox.myBox.forEach(function (obj) {
+                    _this.oldFlag = true;
+                });
+                CreateStage.box = [];
+                CreateStage.I.arrangePanel();
+                //correct エフェクトを最前面に出す
+                GameObject.display.addChild(this.correctTextField);
+                GameObject.display.addChild(this.comboTextField);
+            }
+            else {
+                this.correctTextField.text = "Miss...";
+                Score.I.comboFlag = false;
+                Score.I.combo = 0;
+                CreateStage.lightAndDark = 50;
+            }
+            //文字数によって中央が変化するため、再調整
+            this.correctTextField.anchorOffsetX = this.correctTextField.width / 2;
+            this.correctTextField.anchorOffsetY = this.correctTextField.height / 2;
+            this.comboTextField.anchorOffsetX = this.comboTextField.width / 2;
+            this.comboTextField.anchorOffsetY = this.comboTextField.height / 2;
+            //テキストアニメーション起動
+            //this.animationFlag = true;
+        }
+    };
+    MyBox.prototype.animation = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(CreateStage.I.startFlag == false)) return [3 /*break*/, 3];
-                        if (!(this.correctFlag == true)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, MyBox.myBox.forEach(function (obj) {
-                                obj.destroy();
-                            })];
+                        if (!(this.animationFlag == true)) return [3 /*break*/, 4];
+                        if (!(this.correctTextField.y > this.animationStopPosY)) return [3 /*break*/, 1];
+                        this.correctTextField.y -= 2;
+                        this.comboTextField.y -= 2;
+                        //テキストをフェードイン
+                        if (this.correctTextField.alpha < 1) {
+                            this.correctTextField.alpha += 0.1;
+                            this.comboTextField.alpha += 0.1;
+                        }
+                        return [3 /*break*/, 4];
                     case 1:
-                        _a.sent();
-                        CreateStage.box = [];
-                        CreateStage.I.arrangePanel();
-                        //Startの表示
-                        Discription.I.countFlag = true;
-                        _a.label = 2;
-                    case 2: return [3 /*break*/, 7];
-                    case 3:
-                        if (!(CreateStage.I.startFlag == true && CreateStage.I.gameOverFlag == false)) return [3 /*break*/, 7];
-                        if (!(this.correctFlag == true)) return [3 /*break*/, 5];
-                        Score.I.addScore();
-                        this.correctTextField.text = "Correct!!";
-                        if (Score.I.combo > 0) {
-                            this.comboTextField.text = "Combo :" + Score.I.combo.toString();
-                        }
-                        else {
-                            this.comboTextField.text = "";
-                        }
-                        if (CreateStage.lightAndDark > 15) {
-                            CreateStage.lightAndDark -= 1;
-                        }
-                        //パネルのshapeのみを削除。イベントは残っている可能性あり。
+                        this.correctTextField.y -= 2;
+                        this.comboTextField.y -= 2;
+                        if (!(this.correctTextField.alpha > 0)) return [3 /*break*/, 2];
+                        this.correctTextField.alpha -= 0.1;
+                        this.comboTextField.alpha -= 0.1;
+                        return [3 /*break*/, 4];
+                    case 2:
+                        this.correctTextField.alpha = 0;
+                        this.comboTextField.alpha = 0;
+                        this.animationFlag = false;
                         return [4 /*yield*/, MyBox.myBox.forEach(function (obj) {
-                                obj.destroy();
+                                if (obj.oldFlag) {
+                                    obj.comboTextField.text = null;
+                                    obj.correctTextField.text = null;
+                                    obj.destroy();
+                                }
                             })];
-                    case 4:
-                        //パネルのshapeのみを削除。イベントは残っている可能性あり。
+                    case 3:
                         _a.sent();
                         MyBox.myBox = [];
-                        CreateStage.box = [];
-                        CreateStage.I.arrangePanel();
-                        //correct エフェクトを最前面に出す
-                        GameObject.display.addChild(this.correctTextField);
-                        GameObject.display.addChild(this.comboTextField);
-                        return [3 /*break*/, 6];
-                    case 5:
-                        this.correctTextField.text = "Miss...";
-                        Score.I.comboFlag = false;
-                        Score.I.combo = 0;
-                        CreateStage.lightAndDark = 50;
-                        _a.label = 6;
-                    case 6:
-                        //文字数によって中央が変化するため、再調整
-                        this.correctTextField.anchorOffsetX = this.correctTextField.width / 2;
-                        this.correctTextField.anchorOffsetY = this.correctTextField.height / 2;
-                        this.comboTextField.anchorOffsetX = this.comboTextField.width / 2;
-                        this.comboTextField.anchorOffsetY = this.comboTextField.height / 2;
-                        this.animationFlag = true;
-                        _a.label = 7;
-                    case 7: return [2 /*return*/];
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         });
-    };
-    MyBox.prototype.animation = function () {
-        if (this.animationFlag == true) {
-            if (this.correctTextField.y > this.animationStopPosY) {
-                this.correctTextField.y -= 2;
-                this.comboTextField.y -= 2;
-                //テキストをフェードイン
-                if (this.correctTextField.alpha < 1) {
-                    this.correctTextField.alpha += 0.1;
-                    this.comboTextField.alpha += 0.1;
-                }
-            }
-            else {
-                this.correctTextField.y -= 2;
-                this.comboTextField.y -= 2;
-                //テキストをフェードアウト
-                if (this.correctTextField.alpha > 0) {
-                    this.correctTextField.alpha -= 0.1;
-                    this.comboTextField.alpha -= 0.1;
-                }
-                else {
-                    this.correctTextField.alpha = 0;
-                    this.comboTextField.alpha = 0;
-                    this.animationFlag = false;
-                }
-            }
-        }
     };
     MyBox.prototype.changeColor = function (color) {
         this.shape.graphics.beginFill(color);

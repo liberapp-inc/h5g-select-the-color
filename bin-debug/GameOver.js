@@ -50,7 +50,7 @@ var GameOver = (function (_super) {
         GameObject.display.addChild(this.textScore);
         this.gameOver();
         if (this.nextGameFlag) {
-            this.alphaIncreaseFlag = Effect.flashing(this.textNext, 0.04, this.alphaIncreaseFlag);
+            this.alphaIncreaseFlag = Effect.flashing(this.textNext, 0.06, this.alphaIncreaseFlag);
         }
     };
     GameOver.prototype.tap = function (e) {

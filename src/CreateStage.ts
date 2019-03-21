@@ -50,6 +50,7 @@ class CreateStage extends GameObject{
 
             }
         }
+        
     }
 
     addDestroyMethod() {
