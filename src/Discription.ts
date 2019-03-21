@@ -7,6 +7,8 @@ class Discription extends GameObject{
 
     count:number = 0;
 
+    alphaIncreaseFlag : boolean[] = [true,true];
+
     constructor() {
         super();
         this.textColor = Util.color(0,0,0);
@@ -45,9 +47,20 @@ class Discription extends GameObject{
     updateContent() {
         if(this.countFlag == true)
         this.animation();
+        if(!CreateStage.I.startFlag){
+           
+            this.alphaIncreaseFlag[0] = Effect.flashing(this.text[0], 0.02, this.alphaIncreaseFlag[0]);
+            this.alphaIncreaseFlag[1] = Effect.flashing(this.text[1], 0.02, this.alphaIncreaseFlag[1]);
+            
+        }
+        else{
+            this.text[0].alpha = 0;
+            this.text[1].alpha = 0;
+        }
     }
 
     animation(){
+        CreateStage.I.startFlag = true;
         if(this.text[2].alpha < 1){
             this.text[2].alpha += 0.2;
         }
@@ -57,7 +70,6 @@ class Discription extends GameObject{
             if(this.count >=50){
                 //gameスタート
                 
-                CreateStage.startFlag = true;
                 this.destroy();
 
             }
@@ -65,5 +77,21 @@ class Discription extends GameObject{
         GameObject.display.addChild( this.text[2] );
     }
 
+/*    flashing(obj : any, speed : number, turnOnFlag:boolean){
+        if(turnOnFlag){
+            obj.alpha += speed;
+            if(obj.alpha >=1 ){
+                obj.alpha =1;
+                turnOnFlag = false;
+            }
+        }
+        else if(!turnOnFlag){
+            obj.alpha -= speed;
+            if(obj.alpha < 0 ){
+                obj.alpha =0;
+                turnOnFlag = true;
+            }
+        }
+    }*/
 
 }

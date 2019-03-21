@@ -11,11 +11,11 @@ class Time extends GameObject{
 
     constructor() {
         super();
-        this.textColor = Util.color(0,255,0);
+        this.textColor = Util.color(0,0,0);
 
         Time.I = this;
-        this.time = 15;
-        this.text = Util.myText(400, 0, "Time : 30", 100, 0.5, this.textColor, true);
+        this.time = 30;
+        this.text = Util.myText(350, 0, "Time : 30", 100, 0.5, this.textColor, true);
         GameObject.display.addChild( this.text );
 
         Time.timer = new egret.Timer(1000,0);
@@ -41,12 +41,13 @@ class Time extends GameObject{
     }
 
     timePass(){
-        if(CreateStage.startFlag == true){
+        if(CreateStage.I.startFlag == true){
             if(this.time > 0){
                 this.time -= 1;
             }
-            if(this.time == 0){
-
+            if(this.time == 0 &&CreateStage.I.gameOverFlag == false){
+                this.time = 0;
+                new GameOver();
             }
 
         }

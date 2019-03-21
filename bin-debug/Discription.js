@@ -15,6 +15,7 @@ var Discription = (function (_super) {
         _this.text = [];
         _this.countFlag = false;
         _this.count = 0;
+        _this.alphaIncreaseFlag = [true, true];
         _this.textColor = Util.color(0, 0, 0);
         var h = 170;
         Discription.I = _this;
@@ -42,8 +43,17 @@ var Discription = (function (_super) {
     Discription.prototype.updateContent = function () {
         if (this.countFlag == true)
             this.animation();
+        if (!CreateStage.I.startFlag) {
+            this.alphaIncreaseFlag[0] = Effect.flashing(this.text[0], 0.02, this.alphaIncreaseFlag[0]);
+            this.alphaIncreaseFlag[1] = Effect.flashing(this.text[1], 0.02, this.alphaIncreaseFlag[1]);
+        }
+        else {
+            this.text[0].alpha = 0;
+            this.text[1].alpha = 0;
+        }
     };
     Discription.prototype.animation = function () {
+        CreateStage.I.startFlag = true;
         if (this.text[2].alpha < 1) {
             this.text[2].alpha += 0.2;
         }
@@ -52,7 +62,6 @@ var Discription = (function (_super) {
             this.count += 1;
             if (this.count >= 50) {
                 //gameスタート
-                CreateStage.startFlag = true;
                 this.destroy();
             }
         }

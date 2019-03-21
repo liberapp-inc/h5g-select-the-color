@@ -15,17 +15,17 @@ class Score extends GameObject{
     constructor() {
         super();
 
-        this.textColor = Util.color(0,255,0);
+        this.textColor = Util.color(0,0,0);
 
         Score.I = this;
         this.score = 0;
         this.text = Util.myText(0, 0, "SCORE : 0", 100, 0.5, this.textColor, true);
         GameObject.display.addChild( this.text );
 
-        let bestScore = window.localStorage.getItem("bestScore"); // string
+        let bestScore = window.localStorage.getItem("bestScore_Select_the_Different_color"); // string
         if( bestScore == null ){
             bestScore = "0";
-            window.localStorage.setItem("bestScore", bestScore);
+            window.localStorage.setItem("bestScore_Select_the_Different_color", bestScore);
         }
         this.bestScore = parseInt( bestScore );
         this.textBest = Util.myText(0, 50, "BEST : " + bestScore, 100, 0.5, this.textColor, true);
@@ -38,6 +38,7 @@ class Score extends GameObject{
         GameObject.display.removeChild( this.textBest );
         this.textBest = null;
         this.score = 0;
+        this.combo = 0;
     }
 
     updateContent() {
@@ -49,12 +50,11 @@ class Score extends GameObject{
     }
 
     addScore(){
-        if(CreateStage.startFlag == true){
+        if(CreateStage.I.startFlag == true){
             this.score += 1;
             if(this.comboFlag){
-                this.combo++;
                 this.score += this.combo;
-                
+                this.combo++;
             }
             this.comboFlag =true;
 

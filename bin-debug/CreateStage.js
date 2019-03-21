@@ -13,6 +13,8 @@ var CreateStage = (function (_super) {
     function CreateStage() {
         var _this = _super.call(this) || this;
         _this.boxColor = null;
+        _this.startFlag = false;
+        _this.gameOverFlag = false;
         CreateStage.I = _this;
         _this.arrangePanel();
         return _this;
@@ -49,13 +51,13 @@ var CreateStage = (function (_super) {
         }
     };
     CreateStage.prototype.addDestroyMethod = function () {
-        CreateStage.startFlag = false;
+        CreateStage.I.startFlag = false;
+        CreateStage.lightAndDark = 50;
     };
     CreateStage.prototype.updateContent = function () { };
     CreateStage.I = null;
     CreateStage.box = [];
     CreateStage.lightAndDark = 50;
-    CreateStage.startFlag = false;
     return CreateStage;
 }(GameObject));
 __reflect(CreateStage.prototype, "CreateStage");

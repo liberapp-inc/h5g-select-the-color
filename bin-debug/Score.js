@@ -18,15 +18,15 @@ var Score = (function (_super) {
         _this.bestScore = 0;
         _this.text = null;
         _this.textBest = null;
-        _this.textColor = Util.color(0, 255, 0);
+        _this.textColor = Util.color(0, 0, 0);
         Score.I = _this;
         _this.score = 0;
         _this.text = Util.myText(0, 0, "SCORE : 0", 100, 0.5, _this.textColor, true);
         GameObject.display.addChild(_this.text);
-        var bestScore = window.localStorage.getItem("bestScore"); // string
+        var bestScore = window.localStorage.getItem("bestScore_Select_the_Different_color"); // string
         if (bestScore == null) {
             bestScore = "0";
-            window.localStorage.setItem("bestScore", bestScore);
+            window.localStorage.setItem("bestScore_Select_the_Different_color", bestScore);
         }
         _this.bestScore = parseInt(bestScore);
         _this.textBest = Util.myText(0, 50, "BEST : " + bestScore, 100, 0.5, _this.textColor, true);
@@ -39,6 +39,7 @@ var Score = (function (_super) {
         GameObject.display.removeChild(this.textBest);
         this.textBest = null;
         this.score = 0;
+        this.combo = 0;
     };
     Score.prototype.updateContent = function () {
         this.text.text = "SCORE : " + this.score.toFixed();
@@ -48,11 +49,11 @@ var Score = (function (_super) {
         }
     };
     Score.prototype.addScore = function () {
-        if (CreateStage.startFlag == true) {
+        if (CreateStage.I.startFlag == true) {
             this.score += 1;
             if (this.comboFlag) {
-                this.combo++;
                 this.score += this.combo;
+                this.combo++;
             }
             this.comboFlag = true;
         }

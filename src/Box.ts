@@ -142,13 +142,13 @@ class MyBox extends Box{
 
     }
 
-    touch(e : egret.TouchEvent){
+    async touch(e : egret.TouchEvent){
 
         //タイトル画面
-        if(CreateStage.startFlag == false){
+        if(CreateStage.I.startFlag == false){
             if(this.correctFlag ==true){
-                MyBox.myBox.forEach(obj => {
-                    obj.shape = null;
+               await MyBox.myBox.forEach(obj => {
+                    obj.destroy();
                 });
                 CreateStage.box = [];
                 CreateStage.I.arrangePanel();
@@ -157,20 +157,28 @@ class MyBox extends Box{
 
             }
             
-        }else{
+        }else if(CreateStage.I.startFlag == true && CreateStage.I.gameOverFlag == false){
 
             if(this.correctFlag == true){
-                this.correctTextField.text = "Correct!!"
-                this.comboTextField.text = "Combo :"+Score.I.combo.toString();
                 Score.I.addScore();
+                this.correctTextField.text = "Correct!!";
+
+                if(Score.I.combo > 0){//テキストを表示してからスコアを加算しているため >=0にしている
+                    this.comboTextField.text = "Combo :"+Score.I.combo.toString();
+                }else{
+                    this.comboTextField.text = "";
+                }
                 if(CreateStage.lightAndDark > 15){
                     CreateStage.lightAndDark -= 1;
                 }
                 
                 //パネルのshapeのみを削除。イベントは残っている可能性あり。
-                MyBox.myBox.forEach(obj => {
-                    obj.shape = null;
+                await MyBox.myBox.forEach(obj => {
+                    obj.destroy();
+                   
                 });
+
+                MyBox.myBox= [];
                 CreateStage.box = [];
                 CreateStage.I.arrangePanel();
                 //correct エフェクトを最前面に出す

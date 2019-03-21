@@ -4,7 +4,8 @@ class CreateStage extends GameObject{
     static box : MyBox[][] = [];
     static lightAndDark :number = 50;
     boxColor : number = null;
-    static startFlag : boolean =false;
+    startFlag : boolean =false;
+    gameOverFlag : boolean = false;
     constructor(){
         super();
         CreateStage.I = this;
@@ -52,7 +53,8 @@ class CreateStage extends GameObject{
     }
 
     addDestroyMethod() {
-        CreateStage.startFlag = false;
+        CreateStage.I.startFlag = false;
+        CreateStage.lightAndDark = 50;
         
     }
 

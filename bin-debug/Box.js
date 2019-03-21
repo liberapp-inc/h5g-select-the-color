@@ -8,6 +8,41 @@ var __extends = this && this.__extends || function __extends(t, e) {
 for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
 r.prototype = e.prototype, t.prototype = new r();
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var Box = (function (_super) {
     __extends(Box, _super);
     function Box(x, y, width, height, color) {
@@ -108,49 +143,69 @@ var MyBox = (function (_super) {
         return _this;
     }
     MyBox.prototype.touch = function (e) {
-        //タイトル画面
-        if (CreateStage.startFlag == false) {
-            if (this.correctFlag == true) {
-                MyBox.myBox.forEach(function (obj) {
-                    obj.shape = null;
-                });
-                CreateStage.box = [];
-                CreateStage.I.arrangePanel();
-                //Startの表示
-                Discription.I.countFlag = true;
-            }
-        }
-        else {
-            if (this.correctFlag == true) {
-                this.correctTextField.text = "Correct!!";
-                this.comboTextField.text = "Combo :" + Score.I.combo.toString();
-                Score.I.addScore();
-                if (CreateStage.lightAndDark > 15) {
-                    CreateStage.lightAndDark -= 1;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(CreateStage.I.startFlag == false)) return [3 /*break*/, 3];
+                        if (!(this.correctFlag == true)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, MyBox.myBox.forEach(function (obj) {
+                                obj.destroy();
+                            })];
+                    case 1:
+                        _a.sent();
+                        CreateStage.box = [];
+                        CreateStage.I.arrangePanel();
+                        //Startの表示
+                        Discription.I.countFlag = true;
+                        _a.label = 2;
+                    case 2: return [3 /*break*/, 7];
+                    case 3:
+                        if (!(CreateStage.I.startFlag == true && CreateStage.I.gameOverFlag == false)) return [3 /*break*/, 7];
+                        if (!(this.correctFlag == true)) return [3 /*break*/, 5];
+                        Score.I.addScore();
+                        this.correctTextField.text = "Correct!!";
+                        if (Score.I.combo > 0) {
+                            this.comboTextField.text = "Combo :" + Score.I.combo.toString();
+                        }
+                        else {
+                            this.comboTextField.text = "";
+                        }
+                        if (CreateStage.lightAndDark > 15) {
+                            CreateStage.lightAndDark -= 1;
+                        }
+                        //パネルのshapeのみを削除。イベントは残っている可能性あり。
+                        return [4 /*yield*/, MyBox.myBox.forEach(function (obj) {
+                                obj.destroy();
+                            })];
+                    case 4:
+                        //パネルのshapeのみを削除。イベントは残っている可能性あり。
+                        _a.sent();
+                        MyBox.myBox = [];
+                        CreateStage.box = [];
+                        CreateStage.I.arrangePanel();
+                        //correct エフェクトを最前面に出す
+                        GameObject.display.addChild(this.correctTextField);
+                        GameObject.display.addChild(this.comboTextField);
+                        return [3 /*break*/, 6];
+                    case 5:
+                        this.correctTextField.text = "Miss...";
+                        Score.I.comboFlag = false;
+                        Score.I.combo = 0;
+                        CreateStage.lightAndDark = 50;
+                        _a.label = 6;
+                    case 6:
+                        //文字数によって中央が変化するため、再調整
+                        this.correctTextField.anchorOffsetX = this.correctTextField.width / 2;
+                        this.correctTextField.anchorOffsetY = this.correctTextField.height / 2;
+                        this.comboTextField.anchorOffsetX = this.comboTextField.width / 2;
+                        this.comboTextField.anchorOffsetY = this.comboTextField.height / 2;
+                        this.animationFlag = true;
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
-                //パネルのshapeのみを削除。イベントは残っている可能性あり。
-                MyBox.myBox.forEach(function (obj) {
-                    obj.shape = null;
-                });
-                CreateStage.box = [];
-                CreateStage.I.arrangePanel();
-                //correct エフェクトを最前面に出す
-                GameObject.display.addChild(this.correctTextField);
-                GameObject.display.addChild(this.comboTextField);
-            }
-            else {
-                this.correctTextField.text = "Miss...";
-                Score.I.comboFlag = false;
-                Score.I.combo = 0;
-                CreateStage.lightAndDark = 50;
-            }
-            //文字数によって中央が変化するため、再調整
-            this.correctTextField.anchorOffsetX = this.correctTextField.width / 2;
-            this.correctTextField.anchorOffsetY = this.correctTextField.height / 2;
-            this.comboTextField.anchorOffsetX = this.comboTextField.width / 2;
-            this.comboTextField.anchorOffsetY = this.comboTextField.height / 2;
-            this.animationFlag = true;
-        }
+            });
+        });
     };
     MyBox.prototype.animation = function () {
         if (this.animationFlag == true) {
