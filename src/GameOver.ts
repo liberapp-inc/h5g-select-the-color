@@ -74,6 +74,7 @@ class GameOver extends GameObject{
         }
         if(this.nextGameCount >= 1 && this.nextGameFlag == false){
             this.nextGameFlag = true;
+            GameObject.display.addChild( this.textNext );
             GameObject.display.once(egret.TouchEvent.TOUCH_TAP, (e: egret.TouchEvent) => this.tap(e), this);
         }
     }
