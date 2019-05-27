@@ -42,7 +42,7 @@ class Panel extends GameCompornent{
             if(this.correctFlag){
                 CreateGameScene.I.startFlag = true;
                 new TimeLimit(0,0,0,0,ColorPallet.BLACK);
-                Panel.retryButton = new RetryButton(Game.width - Game.width*0.26, 4, Game.width * 0.26, Game.width*0.12, 60, 0.5, "リトライ");
+                Panel.retryButton = new RetryButton(Game.width - Game.width*0.26, Game.width*0.16, Game.width * 0.26, Game.width*0.12, 60, 0.5, "リトライ");
                 Description.I.destroy();
                 CreateGameScene.I.resetShape();
                 CreateGameScene.I.arrangePanel();                

@@ -12,8 +12,9 @@ class MyTween {
 
     static textFlash(label : eui.Label){
         egret.Tween.get(label,{loop:true}) 
-            .to({alpha:1 }, 700, egret.Ease.quartIn)
-            .to({alpha:0 }, 700, egret.Ease.quadOut)
+            .to({alpha:1 }, 700)
+            .to({alpha:0 }, 700)
+            .to({alpha:1 }, 700)
     }
 
     static result(result:Result, label : eui.Label){
