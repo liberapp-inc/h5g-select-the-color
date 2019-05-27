@@ -1,27 +1,42 @@
 class GameOver extends UICompornent{
 
+    static I :GameOver = null;
     textGameOver:eui.Label = null;
     textScore:eui.Label = null;
-    textColor : number = ColorPallet.BLUE;
+    textColor : number = ColorPallet.BLACK;
     static gameOverFlag : boolean = false;
+    
 
     constructor(x : number, y : number, width : number, height : number) {
         super(x,y,width,height);
+        GameOver.I = this;
         GameOver.gameOverFlag = true;
+        this.setShape();
+        this.setText();
 
-        this.textGameOver = Util.myText(Game.width/2, Game.height/2 - 50, "GAME OVER", 80, 1, this.textColor, true);
+        //UILayer.display.once(egret.TouchEvent.TOUCH_BEGIN,  this.tap, this);
+        Score.I.saveBestScore();
+        new Result(0,0,0,0,ColorPallet.BLACK);
+
+    }
+
+    setShape(){
+        const shape : egret.Shape = Util.setRect(0,0,Game.width,Game.height,ColorPallet.WHITE,0,true);
+        this.compornent.addChild(shape);
+        shape.alpha = 0.5;
+        this.shapes.push(shape);
+    }
+
+    setText(){
+        this.textGameOver = Util.myText(Game.width/2, Game.height*0.4, "あなたの目は…", 80, 0.5, this.textColor, true);
         this.textGameOver.anchorOffsetX = this.textGameOver.width/2;
         this.textGameOver.anchorOffsetY = this.textGameOver.height/2;
         this.compornent.addChild( this.textGameOver );
         
-        this.textScore = Util.myText(Game.width/2, Game.height/2 + 50, "SCORE : " + Score.score, 80, 1, this.textColor, true);
+        this.textScore = Util.myText(Game.width/2, Game.height*0.2 + 50,"", 80, 1, this.textColor, true);
         this.textScore.anchorOffsetX = this.textScore.width/2;
         this.textScore.anchorOffsetY = this.textScore.height/2;
         this.compornent.addChild( this.textScore );
-
-        UILayer.display.once(egret.TouchEvent.TOUCH_BEGIN, (e: egret.TouchEvent) => this.tap(e), this);
-        Score.I.saveBestScore();
-
     }
 
     addDestroyMethod() {
@@ -31,13 +46,15 @@ class GameOver extends UICompornent{
 
         this.textGameOver = null;
         this.textScore = null;
+        this.shapes = [];
+
     }
     
     updateContent() {
 
      }
 
-    tap(e:egret.TouchEvent){
+    static tap(){
         UILayer.I.remove();
         GameObject.transit = Game.init;
 

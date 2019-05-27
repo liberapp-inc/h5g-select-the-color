@@ -10,12 +10,53 @@ class MyTween {
             });
     }
 
-    static touchPanel(panelComopornent:egret.DisplayObjectContainer){
+    static textFlash(label : eui.Label){
+        egret.Tween.get(label,{loop:true}) 
+            .to({alpha:1 }, 700, egret.Ease.quartIn)
+            .to({alpha:0 }, 700, egret.Ease.quadOut)
+    }
+
+    static result(result:Result, label : eui.Label){
+        egret.Tween.get(label) 
+            .wait(2000)
+            .call(()=> {
+                egret.Tween.removeTweens(label);
+                Result.roulette = true;
+                result.checkScore();
+                new RetryButton((Game.width - Game.width*0.4)/2, Game.height*0.6, Game.width * 0.4, Game.width*0.18, 80, 0.5, "リトライ");
+            });
+    }
+    static touchMissPanel(panelComopornent:egret.DisplayObjectContainer, mask:egret.Shape){
         egret.Tween.get(panelComopornent) 
-            .to({scaleX:1.15, scaleY:1.15}, 100, egret.Ease.quartIn)
-            .to({scaleX:1, scaleY:1}, 400)
+            .to({scaleX:1.15, scaleY:1.15}, 50, egret.Ease.quartIn)
+            .to({scaleX:1, scaleY:1}, 100)
             .call(()=> {
                 egret.Tween.removeTweens(panelComopornent);
+            });
+
+        egret.Tween.get(mask) 
+            .to({alpha:0.3}, 50, egret.Ease.quartIn)
+            .to({alpha:0}, 100)
+            .call(()=> {
+                egret.Tween.removeTweens(mask);
+            });
+
+    }
+    static touchCorrectPanel(panelComopornent:egret.DisplayObjectContainer, mask:egret.Shape){
+        egret.Tween.get(panelComopornent) 
+            .to({scaleX:1.15, scaleY:1.15}, 50, egret.Ease.quartIn)
+            .to({scaleX:1, scaleY:1}, 100)
+            .call(()=> {
+                egret.Tween.removeTweens(panelComopornent);
+            });
+
+        egret.Tween.get(mask) 
+            .to({alpha:0.3}, 50, egret.Ease.quartIn)
+            .to({alpha:0}, 100)
+            .call(()=> {
+                egret.Tween.removeTweens(mask);
+                CreateGameScene.I.resetShape();
+                CreateGameScene.I.arrangePanel();
             });
 
     }

@@ -15,7 +15,7 @@ class TimeLimit extends UICompornent{
 
         TimeLimit.limitTimer = new egret.Timer(TimeLimit.limitInterval,0);
         TimeLimit.limitTimer.addEventListener(egret.TimerEvent.TIMER,this.timePass,this);
-        //TimeLimit.limitTimer.start();
+        TimeLimit.limitTimer.start();
 
         this.textColor = color;
         this.setText();
@@ -28,7 +28,10 @@ class TimeLimit extends UICompornent{
     }
 
     private setText(){
-        this.timeText = Util.myText(0,0,"TIME : " + this.time.toString(),100, 0.5,this.textColor, true);
+        this.timeText = Util.myText(Game.width/2,0,"TIME : " + this.time.toString(),80, 0.5,this.textColor, true);
+        this.timeText.anchorOffsetX = this.timeText.width/2;
+        //this.timeText.anchorOffsetY = this.timeText.height/2;
+        //this.timeText.x = (Game.width - this.timeText.width)/2;
         this.compornent.addChild(this.timeText);
     }
 
@@ -50,6 +53,7 @@ class TimeLimit extends UICompornent{
             if(this.time == 0){
                 this.time = 0;
                 new GameOver(0,0,0,0);
+                Panel.retryButton.destroy();
             }
 
         }

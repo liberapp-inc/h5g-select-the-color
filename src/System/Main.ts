@@ -6,6 +6,7 @@ enum ColorPallet{
     BLUE = 0x80bd9e,
     GREEN = 0x89da59,
     VERMILION = 0xf98866,
+    BLACK = 0x222222,
 
 }
 
@@ -56,8 +57,8 @@ class Game{
 
         //new Ground(0,Game.height-200,Game.width,0,4,ColorPallet.RED);
         //new Player(Game.width/2,Game.height-250,Game.width*0.2,Game.width*0.1);
-        //new Score(0,0,0,0, ColorPallet.BLUE);
-        //new Description(0,0,0,0, ColorPallet.BLUE);
+        new Score(0,0,0,0, ColorPallet.BLACK);
+        new Description(0,0,0,0, ColorPallet.BLACK);
         new CreateGameScene();
         
     }

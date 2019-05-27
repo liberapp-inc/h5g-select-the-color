@@ -14,7 +14,7 @@ class EffectLabel extends UICompornent{
     }
 
     setText(x : number, y : number, width : number, height : number, text:string){
-        this.label = Util.myText(x, y, text, 80, 0.5, this.labelColor, true);
+        this.label = Util.myText(x, y, text, 70, 0.5, this.labelColor, true);
         this.label.alpha = 0.2;
         this.label.anchorOffsetX = this.label.width/2;
         this.label.anchorOffsetY = this.label.height/2;

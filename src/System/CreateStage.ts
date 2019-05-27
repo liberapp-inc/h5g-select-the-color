@@ -4,19 +4,21 @@ class CreateGameScene extends GameObject {
     static lightAndDark :number = 50;
     static panel :Panel[][] = [];
     boxColor : number = null;
-    //startFlag : boolean =false;
+    startFlag : boolean =false;
     //gameOverFlag : boolean = false;
     
     constructor(){
         super();
         CreateGameScene.I = this;
+        CreateGameScene.lightAndDark = 50;
+        this.startFlag = false;
         this.arrangePanel();
     }
 
     arrangePanel(){
 
         const moveX :number = Game.width/4.5;
-        const moveY :number = Game.height/2.8;
+        const moveY :number = Game.height*0.3;
 
         //correctPanel番号を設定
         const correctBoxNumberI = Util.randomInt(0,3);
@@ -45,13 +47,22 @@ class CreateGameScene extends GameObject {
 
             }
         }
-        
+    }
+
+    resetShape(){
+        for(let i = 0; i < 4; i++){
+            for(let j = 0; j < 3; j++){
+                CreateGameScene.panel[i][j].destroy();
+            }
+        }
+        CreateGameScene.panel = [];
+
     }
 
     addDestroyMethod() {
         //CreateGameScene.I.startFlag = false;
-        CreateGameScene.lightAndDark = 50;
-        
+        //CreateGameScene.lightAndDark = 50;
+        this.resetShape();
     }
 
     updateContent(){}

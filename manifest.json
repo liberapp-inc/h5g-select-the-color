@@ -14,6 +14,7 @@
 		"bin-debug/System/MyTween.js",
 		"bin-debug/Object/Background.js",
 		"bin-debug/Object/Panel.js",
+		"bin-debug/Object/Result.js",
 		"bin-debug/Object/TimeLimit.js",
 		"bin-debug/System/CreateStage.js",
 		"bin-debug/System/GameOver.js",
