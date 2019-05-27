@@ -2,14 +2,12 @@ class Description extends UICompornent{
 
     static I :Description = null;
     text:eui.Label = null;
-    //textBest:eui.Label = null;
     textColor : number = 0x000000;
 
     constructor(x : number, y : number, width : number, height : number, color : number) {
         super(x,y,width,height);
         Description.I = this;
         this.textColor = color;
-        //Score.bestScore = SaveData.object.bestScore;
         this.setText();
         MyTween.textFlash(this.text);
         

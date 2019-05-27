@@ -6,7 +6,6 @@ class Panel extends GameCompornent{
 
     constructor(x : number, y : number, width : number, height : number, color:number) {
         super(x, y, width, height);
-        //Panel.panel.push(this);
         this.setShape(0, 0, width,height,color);
         this.setMask(0, 0, width,height,0xffffff);
 
@@ -59,8 +58,7 @@ class Panel extends GameCompornent{
                 if(CreateGameScene.lightAndDark > 10){
                     CreateGameScene.lightAndDark -=1;
                 }
-    /*            CreateGameScene.I.resetShape();
-                CreateGameScene.I.arrangePanel();*/
+
             }
             else{
                 Score.miss();

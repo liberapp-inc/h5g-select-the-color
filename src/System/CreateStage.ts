@@ -60,8 +60,6 @@ class CreateGameScene extends GameObject {
     }
 
     addDestroyMethod() {
-        //CreateGameScene.I.startFlag = false;
-        //CreateGameScene.lightAndDark = 50;
         this.resetShape();
     }
 

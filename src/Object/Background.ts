@@ -22,7 +22,6 @@ class Background extends GameObject{
 
     private setShape(x:number, y:number,width:number,height:number,color:number){
         const shape : egret.Shape = Util.setRect(x,y,width,height,color,0,true);
-        //this.compornent.addChild(shape);
         this.compornent.addChild(shape);
         this.shapes.push(shape);
     }

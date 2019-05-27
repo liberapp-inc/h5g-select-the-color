@@ -30,8 +30,6 @@ class TimeLimit extends UICompornent{
     private setText(){
         this.timeText = Util.myText(Game.width/2,0,"TIME : " + this.time.toString(),80, 0.5,this.textColor, true);
         this.timeText.anchorOffsetX = this.timeText.width/2;
-        //this.timeText.anchorOffsetY = this.timeText.height/2;
-        //this.timeText.x = (Game.width - this.timeText.width)/2;
         this.compornent.addChild(this.timeText);
     }
 

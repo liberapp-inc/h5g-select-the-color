@@ -13,10 +13,6 @@ abstract class Button extends UICompornent{
     }
 
     setCompornentStatus(x : number, y : number, width : number, height : number){
-/*        this.compornent.anchorOffsetX += width/2;
-        this.compornent.anchorOffsetY += height/2;
-        this.compornent.x = x;
-        this.compornent.y = y;*/
         this.compornent.touchEnabled = true;
         this.compornent.addEventListener( egret.TouchEvent.TOUCH_BEGIN, this.tap, this );
     }

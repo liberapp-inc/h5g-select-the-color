@@ -13,8 +13,6 @@ class GameOver extends UICompornent{
         GameOver.gameOverFlag = true;
         this.setShape();
         this.setText();
-
-        //UILayer.display.once(egret.TouchEvent.TOUCH_BEGIN,  this.tap, this);
         Score.I.saveBestScore();
         new Result(0,0,0,0,ColorPallet.BLACK);
 
