@@ -47,7 +47,7 @@ class Result extends UICompornent{
 
     checkScore(){
         if(this.score >= 0 && this.score < 600){
-            this.resultComment = "コンピュータレべル";
+            this.resultComment = "老眼です";
         }
         else if(this.score >= 600 && this.score < 800){
             this.resultComment = "やや老眼";
@@ -59,7 +59,7 @@ class Result extends UICompornent{
             this.resultComment = "クリアな視界";
         }
         else if(this.score >= 1200){
-            this.resultComment = "パソコンレベル";
+            this.resultComment = "精密機械";
         }
         this.text.text = this.resultComment;
         this.text.anchorOffsetX = this.text.width/2;
@@ -89,7 +89,7 @@ class Result extends UICompornent{
                 this.resultComment = "クリアな視界";
                 break;
                 case ResultComment.PC:
-                this.resultComment = "パソコンレベル";
+                this.resultComment = "精密機械";
                 break;
             }
             this.text.text = this.resultComment;
