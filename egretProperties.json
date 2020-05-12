@@ -1,6 +1,6 @@
 {
-  "engineVersion": "5.2.19",
-  "compilerVersion": "5.2.19",
+  "engineVersion": "5.2.33",
+  "compilerVersion": "5.2.33",
   "template": {},
   "target": {
     "current": "web"
@@ -23,10 +23,6 @@
     },
     {
       "name": "promise"
-    },
-    {
-      "name": "physics",
-      "path": "../physics"
     }
   ]
 }
