@@ -3,4 +3,4 @@ Thumbs.ab
 .sass-cache/
 *.css.map
 bin-debug/
-libs/modules/
+libs/modules/*
