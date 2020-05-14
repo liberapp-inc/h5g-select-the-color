@@ -84,51 +84,6 @@ class Util{
         return label;
     }
 
-    static saveLocalStrage(key :string, saveValue : number){
-        window.localStorage.setItem(key, saveValue.toString());
-    }
-
-    static loadLocalStrage(key : string, initialValue : number):number{
-        let stringValue :string =  window.localStorage.getItem(key); // string
-        if( stringValue == null ){
-            stringValue = initialValue.toString();
-            window.localStorage.setItem(key, stringValue.toString());
-        }
-        let value : number = parseInt(stringValue);
-        return value;
-    }
-
-    static saveStringLocalStrage(key :string, saveValue : string){
-        window.localStorage.setItem(key, saveValue);
-    }
-
-    static loadStringLocalStrage(key : string):string{
-        let stringValue :string =  window.localStorage.getItem(key); // string
-        let value : string = stringValue;
-        return value;
-    }
-
-    static clearLocalStrage(key : string){
-        if(key)
-        window.localStorage.removeItem(key);
-    }
-
-    static saveJSONLocalStrage(key :string, saveObject : any){
-        let jObject : string = JSON.stringify(saveObject);
-        window.localStorage.setItem(key, jObject);
-    }
-
-    static loadJSONLocalStrage(key : string):any{
-        let jObject :string =  window.localStorage.getItem(key); // string
-        if( jObject == null ){
-            SaveData.setObject();
-            jObject = JSON.stringify(SaveData.object);
-            window.localStorage.setItem(key, jObject);
-        }
-        let object : any = JSON.parse(jObject);
-        return object;
-    }
-
     static setRect(x : number, y : number, width : number, height : number, color:number, round:number, fill:boolean, lineWidth?:number):egret.Shape{
 
         const shape:egret.Shape = new egret.Shape();

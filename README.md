@@ -11,3 +11,7 @@
 - `git clone https://github.com/egret-labs/egret-game-library`
 - (参考資料:https://qiita.com/motoyasu-yamada/items/c5facea39b0102d7a365)
 - そもそも不要なのでいったん削除
+
+### 問題: `SdkError(UNKOWN)`
+
+ブラウザーの URL を `http://localhost:3000/index.html` に書き換える
