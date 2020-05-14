@@ -16,6 +16,10 @@
 
 ブラウザーの URL を `http://localhost:3000/index.html` に書き換える
 
-### APKの作成
+### APKの作成を簡単に
 
-`PowerShell -ExecutionPolicy RemoteSigned .\archive.ps1 v2`
+1. 最初に、`bin-release/web/` に `app.json`を用意してください。
+2. Egret Launcherで名前を指定してパブリッシュしてください
+3. EgretWingの画面下部の端末タブ(コマンドライン)で `PowerShell -ExecutionPolicy RemoteSigned .\archive.ps1 <名前>` を叩いてください
+
+
