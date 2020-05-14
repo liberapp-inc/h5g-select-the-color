@@ -15,3 +15,7 @@
 ### 問題: `SdkError(UNKOWN)`
 
 ブラウザーの URL を `http://localhost:3000/index.html` に書き換える
+
+### APKの作成
+
+`PowerShell -ExecutionPolicy RemoteSigned .\archive.ps1 v2`
