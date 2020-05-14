@@ -6,7 +6,7 @@ class Social {
     static async init() {
         const sdk = await Sdk.loadSdk();
         this.sdk = sdk;
-        Toast.show({ text: "ログイン中・・・", delay: 1000 });
+        Toast.show({ text: "ログイン中・・・", delay: 30000, canHide:true });
         await sdk.initializeAsync();
         await sdk.startGameAsync();
         Toast.show({ text: `${this.playerName}さんようこそ！`, delay: 3000 });
@@ -43,7 +43,7 @@ class Social {
 
     static setScore(score: number) {
         setTimeout(async () => {
-            Toast.show({ text: `ハイスコアを送信中`, delay: 1000 });
+            Toast.show({ text: `ハイスコアを送信中`, delay: 30000, canHide:true });
             this.myBest = await this.leaderboard.setScoreAsync(score);
             Toast.show({ text: `順位は${this.bestRank}位でした`, delay: 3000 });
         }, 1);

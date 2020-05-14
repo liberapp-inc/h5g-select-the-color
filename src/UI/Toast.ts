@@ -3,13 +3,20 @@
 interface ToastOptions {
   text: string;
   delay: number;
-  success?: () => void;
+  canHide: boolean;
+}
+
+const DefaultToastOptions : ToastOptions = {
+  text: "",
+  delay: 3000,
+  canHide: false
 }
 
 class Toast extends UICompornent  {
   private static I:Toast;
 
-  public static show(options:ToastOptions): void {
+  public static show(poptions: Partial<ToastOptions>): void {
+    const options : ToastOptions = { ...DefaultToastOptions, ... poptions };
     if (!this.I) {
       this.I = new Toast(Main.I.stage.width * 0.6);
     }
@@ -30,7 +37,8 @@ class Toast extends UICompornent  {
 
   private rect: eui.Rect;
   private label: eui.Label;
-  private showing: boolean;
+  private currentTween: egret.Tween;
+  private currentOptions: ToastOptions;
   private queue: ToastOptions[] = [];
 
   private constructor(maxWidth:number) {
@@ -49,25 +57,36 @@ class Toast extends UICompornent  {
 
   public show(options:ToastOptions) : void {
     console.log(`Toast.show`);
-    if (this.showing) {
-      this.queue.push(options);
-      return;
+    if (this.currentOptions) {
+      if (this.currentOptions.canHide) {
+        this.currentTween.setPaused(true);
+        this.currentTween = undefined;
+        this.currentOptions = undefined;
+        this.queue = [];
+      } else {
+        this.queue.push(options);
+        return;
+      }
     }
-    this.showing = true;
-    const tw = egret.Tween.get(this.rect);
+    this.currentOptions = options;
     this.toastText = options.text;
-    tw.to({ alpha: 1 }, 300).wait(options.delay).call(this.onStartHide, this);
+    this.currentTween = egret.Tween.get(this.rect);
+    this.currentTween.to({ alpha: 1 }, 300).wait(options.delay).call(this.onStartHide, this);
   }
 
   private onStartHide() {
     console.log(`Toast.onStartHide`);
-    const tw = egret.Tween.get(this.rect);
-    tw.to({ alpha: 0 }, 300).call(this.onCompleteHide,this);
+    if (this.currentTween === undefined) {
+      return;
+    }
+    this.currentTween = egret.Tween.get(this.rect);
+    this.currentTween.to({ alpha: 0 }, 300).call(this.onCompleteHide,this);
   }
 
   private onCompleteHide() {
     console.log(`Toast.onCompleteHide`);
-    this.showing = false;
+    this.currentTween = undefined;
+    this.currentOptions = undefined;
     if (0 === this.queue.length) {
       return;
     } 
