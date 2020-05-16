@@ -1,7 +1,7 @@
 class Social {
     private static sdk;
     private static leaderboard;
-    private static myBest;
+    private static myBestEntry;
 
     static async init() {
         const sdk = await Sdk.loadSdk();
@@ -11,12 +11,13 @@ class Social {
         await sdk.startGameAsync();
         Toast.show({ text: `${this.playerName}さんようこそ！`, delay: 3000 });
         this.leaderboard = await sdk.getLeaderboardAsync("default");
-        const [entryCount, entries, myBest] = await Promise.all([
+        const [entryCount, entries, playerEntry] = await Promise.all([
             this.leaderboard.getEntryCountAsync(),
             this.leaderboard.getEntriesAsync(3,0),
             this.leaderboard.getPlayerEntryAsync()
         ]);
-        this.myBest = myBest;
+        this.playerEntry = playerEntry;
+
         if (this.hasBest) {
             Toast.show({ text: `今のところ${entryCount}人中${this.bestRank}位です`, delay: 3000 });
         } else {
@@ -30,23 +31,29 @@ class Social {
     }
 
     static get hasBest(): boolean {
-        return !!this.myBest;
+        return !!this.myBestEntry;
     }
 
     static get bestScore(): number {
-        return this.hasBest ? this.myBest.getScore() : 0;
+        return this.hasBest ? this.myBestEntry.getScore() : 0;
     }
 
-    static get bestRank(): string {
-        return this.myBest.getRank();
+    static get bestRank(): number {
+        return this.hasBest ? this.myBestEntry.getRank() : undefined;
     }
 
-    static setScore(score: number) {
-        setTimeout(async () => {
-            Toast.show({ text: `ハイスコアを送信中`, delay: 30000, canHide:true });
-            this.myBest = await this.leaderboard.setScoreAsync(score);
-            Toast.show({ text: `順位は${this.bestRank}位でした`, delay: 3000 });
-        }, 1);
+    static set playerEntry(playerEntry: any) {
+        console.log("myBest:", this.myBestEntry, playerEntry);
+        this.myBestEntry = playerEntry;
+        Score.bestScore = Social.bestScore;
+        Score.bestRank = Social.bestRank;
+    }
+
+    static async setScore(score: number) {
+        console.log(`setScore ${score}`);
+        Toast.show({ text: `ハイスコアを送信中`, delay: 30000, canHide:true });
+        this.playerEntry = await this.leaderboard.setScoreAsync(score);
+        Toast.show({ text: `順位は${this.bestRank}位でした`, delay: 3000 });
     }
 
     static get playerName() {

@@ -7,14 +7,6 @@ class Sdk {
     "egret-wing": "https://staging.liberapp.net",
   };
 
-  /// こここを書き換えてください
-  private static debugOptions = {
-    applicationKey: "2a2ef67d-0d5a-41e4-8307-69b67f0f552b",
-    debugSigninOptions: {
-      accessToken: "ee0d312e-a601-4d04-a948-2cb2bd456abd",
-      userAkey: "f01d616b-f0bc-4ab0-80e1-04e10888ee3d",
-    },
-  };
   /// 違うバージョンのSDKを読み込むときは書き換えてください
   private static sdkPath = "/dist/sdk/liberapp-ja-0_9.js";
 
@@ -32,8 +24,7 @@ class Sdk {
     console.log("script:", script);
     const liberappSdk = window["LiberappSdk"];
     if (this.env === "egret-wing") {
-      console.log("with debugOptions", this.debugOptions);
-      await liberappSdk.enableDebug(this.debugOptions);
+      await liberappSdk.enableDebug();
     }
     console.log("liberappSdk:", liberappSdk);
     return liberappSdk;
@@ -67,12 +58,9 @@ class Sdk {
       const script = document.createElement("script");
       script.async = false;
       script.src = srcUrl;
-      script.onload = () => {
-        resolve(script);
-      };
-      script.onerror = () =>
-        reject(new Error(`Can not load script: src:${srcUrl}`));
-      document.head.append(script);
+      script.onload = () => resolve(script);
+      script.onerror = () => reject(new Error(`Can not load script: src:${srcUrl}`));
+      (document.head as any).append(script);
     });
   }
 }

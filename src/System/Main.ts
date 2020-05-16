@@ -35,29 +35,17 @@ class Main extends eui.UILayer {
 class Game {
   static width: number;
   static height: number;
-  static mapChipWidth: number;
-  static mapChipHeight: number;
 
   static async init() {
     this.width = egret.MainContext.instance.stage.stageWidth;
     this.height = egret.MainContext.instance.stage.stageHeight;
-    this.mapChipWidth = this.width / 9;
-    this.mapChipHeight = this.height / 16;
-
     GameOver.gameOverFlag = false;
-
-    /* new メソッドを記入*/
     new Background();
     new GameStage();
     new UILayer();
-
-    //new Ground(0,Game.height-200,Game.width,0,4,ColorPallet.RED);
-    //new Player(Game.width/2,Game.height-250,Game.width*0.2,Game.width*0.1);
     new Score(0, 0, 0, 0, ColorPallet.BLACK);
     new Description(0, 0, 0, 0, ColorPallet.BLACK);
-
     await Social.init();
-
     new CreateGameScene();
   }
 }

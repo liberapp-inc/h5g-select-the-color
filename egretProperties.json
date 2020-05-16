@@ -24,5 +24,10 @@
     {
       "name": "promise"
     }
-  ]
+  ],
+  "urlParams": {
+      "accessToken": "ee0d312e-a601-4d04-a948-2cb2bd456abd",
+      "userAkey": "f01d616b-f0bc-4ab0-80e1-04e10888ee3d",
+      "applicationKey": "2a2ef67d-0d5a-41e4-8307-69b67f0f552b"
+  }
 }

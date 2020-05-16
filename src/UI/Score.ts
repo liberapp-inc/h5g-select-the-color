@@ -3,6 +3,8 @@ class Score extends UICompornent {
 
   static score: number = 0;
   static bestScore: number = 0;
+  static bestRank: number | undefined;
+
   static combo: number = 0;
   static comboFlag: boolean = false;
 
@@ -24,7 +26,6 @@ class Score extends UICompornent {
     Score.combo = 0;
     Score.comboFlag = false;
     this.textColor = color;
-    Score.bestScore =　Social.bestScore;
     this.setText();
   }
 
@@ -71,17 +72,14 @@ class Score extends UICompornent {
     }
     Score.bestScore = Score.score;
     this.updateContent();
-
     Social.setScore(Score.bestScore);
   }
 
   updateContent() {
-    if (Social.hasBest) {
-      Score.bestScore = Social.bestScore;
-      this.textBest.text = `BEST: ${Score.bestScore}/${Social.bestRank}位`;
+    if (Score.bestRank) {
+      this.textBest.text = `BEST: ${Score.bestScore}/${Score.bestRank}位`;
     } else {
-      Score.bestScore = 0;
-      this.textBest.text = "BEST: -/-位";
+      this.textBest.text = `BEST: ${Score.bestScore}/-位`;
     }
     if (Score.bestScore < Score.score) {
       // なんかエフェクトだしたらええんじゃない？
