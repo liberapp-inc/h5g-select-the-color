@@ -9,7 +9,7 @@ class Social {
         Toast.show({ text: "ログイン中・・・", delay: 30000, canHide:true });
         await sdk.initializeAsync();
         await sdk.startGameAsync();
-        Toast.show({ text: `${this.playerName}さんようこそ！`, delay: 3000 });
+        Toast.show({ text: `${this.playerName}さんようこそ！`, delay: 30000, canHide:true });
         this.leaderboard = await sdk.getLeaderboardAsync("default");
         const [entryCount, entries, playerEntry] = await Promise.all([
             this.leaderboard.getEntryCountAsync(),
@@ -22,9 +22,10 @@ class Social {
             Toast.show({ text: `今のところ${entryCount}人中${this.bestRank}位です`, delay: 3000 });
         } else {
             const p1 = entries[0];
-            const p1Name= p1.getPlayer().getName();
-            const p1Score = p1.getScore();
             if (p1) {
+                console.log(p1);
+                const p1Name= p1.getPlayer().getName();
+                const p1Score = p1.getScore();
                 Toast.show({ text: `${entryCount}人が遊んでいます!\n一番は${p1Name}さん\nスコアは${p1Score}です`, delay: 3000 });
             }
         }

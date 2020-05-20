@@ -26,14 +26,14 @@ class Score extends UICompornent {
     Score.combo = 0;
     Score.comboFlag = false;
     this.textColor = color;
-    this.setText();
+    this.createChildren();
   }
 
-  setText() {
+  createChildren() {
     this.text = Util.myText(
       0,
       0,
-      "SCORE:" + Score.score.toFixed(),
+      "",
       80,
       0.5,
       this.textColor,
@@ -44,15 +44,12 @@ class Score extends UICompornent {
     this.textBest = Util.myText(
       0,
       this.text.y + 50,
-      "BEST:" + Score.bestScore.toString(),
+      "",
       80,
       0.5,
       this.textColor,
       true
     );
-    Score.bestScore = 0;
-    this.textBest.text = "BEST: -/-位";
-
     this.compornent.addChild(this.textBest);
   }
 
@@ -76,6 +73,7 @@ class Score extends UICompornent {
   }
 
   updateContent() {
+    this.text.text = `SCORE: ${Score.score}`;
     if (Score.bestRank) {
       this.textBest.text = `BEST: ${Score.bestScore}/${Score.bestRank}位`;
     } else {

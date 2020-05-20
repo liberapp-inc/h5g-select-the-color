@@ -1,7 +1,7 @@
 {
   "title": "老眼チェッカー",
   "lead": "1つだけ違う色をタップ高得点を狙え",
-  "description": "【操作方法】¥nパネルをタップ¥n¥n12枚のパネルの中から1つだけ違う色のパネルをタップしてください。間違えるとコンボがリセットされます。",
+  "description": "【操作方法】\nパネルをタップ\n\n12枚のパネルの中から1つだけ違う色のパネルをタップしてください。間違えるとコンボがリセットされます。",
   "copyright": "SqumariGames, Liberapp",
   "useLeaderboard": true,
   "sdkVersion": "0.9",
