@@ -7,155 +7,196 @@
 //  compornentはshapeをひとまとめにする用の親コンテナ。継承先でsetCompornentすること
 
 abstract class GameObject {
-    
-    static objects: GameObject[] = [];
-    static display: egret.DisplayObjectContainer;
-    static transit:()=>void;
 
-    compornent: egret.DisplayObjectContainer = null;
-    shapes :egret.Shape[] = [];
-    destroyFlag : boolean = false;
+  private static objects: GameObject[] = [];
 
-    abstract updateContent() : void;
+  static transit: () => void;
 
-    constructor() {
-        GameObject.objects.push(this);
+  static allDestroy() {
+    GameObject.objects = GameObject.objects.filter(obj => {
+      obj.destroy();
+      obj.delete();
+      return false;
+    });
+  }
+
+  static update() {
+    GameObject.objects.forEach(obj => obj.updateContent());
+
+    //destroyFlagがtrueならshapeを削除
+    GameObject.objects = GameObject.objects.filter(obj => {
+      if (obj.destroyFlag) obj.delete();
+      return (!obj.destroyFlag);
+    });
+
+    if (GameObject.transit) {
+      GameObject.allDestroy();
+      GameObject.transit();
+      GameObject.transit = null;
     }
 
+  }
 
-    static init(mainStage: egret.DisplayObjectContainer){
-        GameObject.objects = [];
-        GameObject.display = mainStage;
+  private destroyFlag: boolean = false;
+  private children: GameObject[] = [];
+
+  constructor() {
+    GameObject.objects.push(this);
+  }
+
+  addChild(add: GameObject) {
+    this.children.push(add);
+  }
+
+  removeChild(remove: GameObject, toDelete: boolean = true) {
+    const i = this.children.indexOf(remove);
+    if (i === -1) {
+      throw new Error("Child not found");
     }
-
-
-    //オブジェクトを削除
-    destroy() { this.destroyFlag = true; }
-    
-    //shapeの削除など、destroy後に追加処理が必要なら記述
-    addDestroyMethod(){}
-
-
-    protected delete(){
-
-        this.addDestroyMethod();
-
-        if( this.shapes && this.compornent){
-            this.shapes.forEach(s => {
-                this.compornent.removeChild(s);
-                s = null;
-            });
-            this.shapes = [];
-        }
-        Util.remove(GameObject.display, this.compornent);
-        const newArray : GameObject[] = GameObject.objects.filter(obj => obj.destroyFlag !== true);
-        GameObject.objects = newArray;
+    const c = this.children[i];
+    this.children.slice(i, 1);
+    if (toDelete) {
+      c.destroy();
     }
+  }
 
-    static allDestroy(){
-        GameObject.objects = GameObject.objects.filter( obj => {
-            obj.destroy();
-            obj.delete();
-            return false; 
-        });
-    }
+  removeChildren(toDelete: boolean = true) {
+    this.children.forEach(c => c.destroy());
+    this.children = [];
+  }
 
-    //繰り返しメソッド
-    static update(){
-        GameObject.objects.forEach(obj => obj.updateContent());
+  destroy() { this.destroyFlag = true; }
 
-        //destroyFlagがtrueならshapeを削除
-        GameObject.objects = GameObject.objects.filter( obj =>{
-            if( obj.destroyFlag ) obj.delete();
-            return ( !obj.destroyFlag );
-        } );
+  protected abstract updateContent(): void;
 
-        if( GameObject.transit ) {
-            GameObject.allDestroy();
-            GameObject.transit();
-            GameObject.transit = null;
-        }
+  protected addDestroyMethod() { }
 
-    }
+  protected delete() {
+    this.addDestroyMethod();
+    const newArray: GameObject[] = GameObject.objects.filter(obj => obj.destroyFlag !== true);
+    GameObject.objects = newArray;
+  }
 }
 
 
-//GameStageに描画する用のコンポーネント
-abstract class GameCompornent extends GameObject{
+class EgretGameObject extends GameObject {
+  private static mainStage: egret.DisplayObjectContainer;
+  private static _stageWidth: number;
+  private static _stageHeight: number;
+  static init(mainStage: egret.DisplayObjectContainer) {
+    EgretGameObject._stageWidth = egret.MainContext.instance.stage.stageWidth;
+    EgretGameObject._stageHeight = egret.MainContext.instance.stage.stageHeight;
+    EgretGameObject.mainStage = mainStage;
+  }
 
-    constructor(x : number, y : number, width : number, height : number){
-        super();
-        this.setCompornent(x,y,width,height);
+  static get stageWidth(): number {
+    return EgretGameObject._stageWidth;
+  }
+
+  static get stageHeight(): number {
+    return EgretGameObject._stageHeight;
+  }
+
+  private container: egret.DisplayObjectContainer;
+
+  constructor(visible: boolean = true) {
+    super();
+    this.container = new egret.DisplayObjectContainer();
+    this.container.name = name;
+  }
+
+  set rect({x, y, width, height}: { x: number, y: number, width: number, height: number }) {
+    this.container.x = x;
+    this.container.y = y;
+    this.container.width = width;
+    this.container.height = height;
+  }
+
+  set visible(value: boolean) {
+    this.container.visible = value;
+  }
+
+  set anchorOffsetX(value: number) {
+    this.container.anchorOffsetX = value;
+  }
+  set anchorOffsetY(value: number) {
+    this.container.anchorOffsetY = value;
+  }
+  set scaleX(value: number) {
+    this.container.scaleX = value;
+  }
+  set scaleY(value: number) {
+    this.container.scaleY = value;
+  }
+  set rotation(value: number) {
+    this.container.rotation = value;
+  }
+
+  get stageWidth() {
+    return EgretGameObject._stageWidth;
+  }
+
+  get stageHeight() {
+    return EgretGameObject._stageHeight;
+  }
+
+  addChild(add: GameObject) {
+    super.addChild(add);
+    if (!(add instanceof EgretGameObject)) {
+      console.log("addChild", "Not Egret Object");
+      return;
+    }
+    this.addEgretDisplayObject(add.container);
+  }
+
+  removeChild(remove: GameObject) {
+    if (!(remove instanceof EgretGameObject)) {
+      console.log("removeChild", "Not Egret Object");
+      return;
+    }
+    console.log("removeChild", "Egret Object", remove);
+    this.removeEgretDisplayObject(remove.container);
+    super.removeChild(remove);
+  }
+
+  removeChildren() {
+    this.container.removeChildren();
+    super.removeChildren();
+  }
+
+  addEgretDisplayObject(add: egret.DisplayObject): void {
+    this.container.addChild(add);
+  }
+
+  removeEgretDisplayObject(remove: egret.DisplayObject) {
+    this.container.removeChild(remove);
+  }
+
+  enableTouch() {
+    this.container.touchEnabled = true;
+    this.container.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
+  }
+
+  protected addDestroyMethod() {
+    if (this.container.hasEventListener) {
+      this.container.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
     }
 
-    setCompornent(x : number, y : number, width : number, height : number){
+    super.addDestroyMethod();
+  }
 
-        this.compornent = new egret.DisplayObjectContainer();
-        this.compornent.x = x;
-        this.compornent.y = y;
-        this.compornent.width = width;
-        this.compornent.height = height;
-        GameStage.display.addChild(this.compornent);
-    }
+  protected onTapped() { }
+  protected updateContent() { }
 
-    //オーバーライド
-    protected delete(){
-
-        this.addDestroyMethod();
-        
-        if( this.shapes && this.compornent){
-            this.shapes.forEach(s => {
-                this.compornent.removeChild(s);
-                s = null;
-            });
-            this.shapes = [];
-        }
-        if(this.compornent){
-            Util.remove(GameStage.display, this.compornent);
-        }
-        const newArray : GameObject[] = GameObject.objects.filter(obj => obj.destroyFlag !== true);
-        GameObject.objects = newArray;
-    }
-
+  protected addAsLayer() {
+    EgretGameObject.mainStage.addChild(this.container);
+  }
 }
 
-//UILayerに描画する用のコンポーネント
-abstract class UICompornent extends GameObject{
-
-    static compornents: UICompornent[] = [];
-
-    constructor(x : number, y : number, width : number, height : number){
-        super();
-        this.setCompornent(x,y,width,height);
-    }
-
-    setCompornent(x : number, y : number, width : number, height : number){
-
-        this.compornent = new egret.DisplayObjectContainer();
-        this.compornent.x = x;
-        this.compornent.y = y;
-        this.compornent.width = width;
-        this.compornent.height = height;
-        UILayer.display.addChild(this.compornent);
-    }
-
-    //オーバーライド
-    protected delete(){
-
-        this.addDestroyMethod();
-
-        if( this.shapes && this.compornent){
-            this.shapes.forEach(s => {
-                this.compornent.removeChild(s);
-                s = null;
-            });
-            this.shapes = [];
-        }
-        if(this.compornent){
-            Util.remove(UILayer.display, this.compornent);
-        }
-        const newArray : GameObject[] = GameObject.objects.filter(obj => obj.destroyFlag !== true);
-        GameObject.objects = newArray;
-    }
-
+abstract class EgretLayerGameObject extends EgretGameObject {
+  constructor() {
+    super(true);
+    this.rect = { x: 0, y: 0, width: EgretGameObject.stageWidth, height: EgretGameObject.stageHeight }
+    this.addAsLayer();
+  }
 }

@@ -1,107 +1,55 @@
-enum ResultComment{
-    ELDERLY,
-    DOG,
-    CAT,
-    TIGER,
-    HAWK,
-    PC,
+interface ResultType {
+  scoreMin: number, scoreMax: number,
+  comment: string;
 }
-class Result extends UICompornent{
 
-    static I :Result = null;
-    private text:eui.Label = null;
-    //private textBest:eui.Label = null;
-    private textColor : number = 0x000000;
-    private score : number = 0;
-    private resultComment : string = null;
-    private comentNumber : number = 0;
-    static roulette : boolean = false;
+const ResultData: ResultType[] = [
+  { scoreMin: Number.NEGATIVE_INFINITY, scoreMax: 600, comment: "老眼です" },
+  { scoreMin: 600, scoreMax: 800, comment: "やや老眼" },
+  { scoreMin: 800, scoreMax: 1000, comment: "老眼ではありません" },
+  { scoreMin: 1000, scoreMax: 1200, comment: "クリアな視界" },
+  { scoreMin: 1200, scoreMax: Number.POSITIVE_INFINITY, comment: "精密機械" }
+];
 
-    constructor(x : number, y : number, width : number, height : number, color : number) {
-        super(x,y,width,height);
-        Result.I = this;
-        this.textColor = color;
-        this.score = TheGame.score;
-        Result.roulette = false;
-        this.setText();
-        MyTween.result(this, this.text);
-        
+class Result extends EgretGameObject {
+  private text: eui.Label = null;
+  private animation: number;
+  private score: number = 0;
+  private comentNumber: number = 0;
+  private rouletting = true;
+
+
+  constructor() {
+    super(false);
+    this.rect = { x: 0, y: 0, width: 0, height: 0 };
+    this.animation = 0;
+    this.score = TheGame.score;
+    this.text = createLabel(this.stageWidth / 2, this.stageHeight * 0.5, "", 120, 0.5, ColorPallet.RESULT_TEXT_COLOR, true);
+    this.text.anchorOffsetX = this.text.width / 2;
+    this.text.anchorOffsetY = this.text.height / 2;
+    this.addEgretDisplayObject(this.text);
+  }
+
+  addDestroyMethod() {
+    super.addDestroyMethod();
+    this.text = null;
+  }
+
+  updateContent() {
+    if (!this.rouletting) {
+      return;
     }
-
-    setText(){
-        const t :string = this.resultComment;
-        this.text = Util.myText(TheGame.width/2, TheGame.height*0.5, t, 120, 0.5, this.textColor, true);
-        this.text.anchorOffsetX = this.text.width/2;
-        this.text.anchorOffsetY = this.text.height/2;
-        this.compornent.addChild( this.text );
+    if (120 < this.animation) {
+      const s = ResultData[this.animation % ResultData.length];
+      if (s.scoreMin <= this.score && this.score < s.scoreMax) {
+        this.text.text = s.comment;
+        this.text.anchorOffsetX = this.text.width / 2;
+        this.text.anchorOffsetY = this.text.height / 2;
+        // RetryButton.create();
+        this.rouletting = false;
+        return;
+      }
     }
-
-
-    addDestroyMethod() {
-        if(this.compornent){
-            this.compornent.removeChildren();
-        }
-
-        this.text = null;
-    }
-
-    checkScore(){
-        if(this.score >= 0 && this.score < 600){
-            this.resultComment = "老眼です";
-        }
-        else if(this.score >= 600 && this.score < 800){
-            this.resultComment = "やや老眼";
-        }
-        else if(this.score >= 800 && this.score < 1000){
-            this.resultComment = "老眼ではありません";
-        }
-        else if(this.score >= 1000 && this.score < 1200){
-            this.resultComment = "クリアな視界";
-        }
-        else if(this.score >= 1200){
-            this.resultComment = "精密機械";
-        }
-        this.text.text = this.resultComment;
-        this.text.anchorOffsetX = this.text.width/2;
-        this.text.anchorOffsetY = this.text.height/2;
-    }
-
-    changeComment(){
-        if(!Result.roulette){
-            this.comentNumber++;
-            if(this.comentNumber > ResultComment.PC){
-                this.comentNumber = 0;
-            }
-            switch(this.comentNumber){
-                case ResultComment.ELDERLY:
-                this.resultComment = "老眼です";
-                break;
-                case ResultComment.DOG:
-                this.resultComment = "やや老眼";
-                break;
-                case ResultComment.CAT:
-                this.resultComment = "老眼ではありません";
-                break;
-                case ResultComment.TIGER:
-                this.resultComment = "老眼ではありません";
-                break;
-                case ResultComment.HAWK:
-                this.resultComment = "クリアな視界";
-                break;
-                case ResultComment.PC:
-                this.resultComment = "精密機械";
-                break;
-            }
-            this.text.text = this.resultComment;
-            this.text.anchorOffsetX = this.text.width/2;
-            this.text.anchorOffsetY = this.text.height/2;
-
-        }
-
-    }
-
-    updateContent(){
-        this.changeComment();
-    }
-
+    this.animation++;
+  }
 }

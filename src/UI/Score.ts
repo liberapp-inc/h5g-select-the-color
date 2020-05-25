@@ -1,51 +1,37 @@
-class Score extends UICompornent {
-  static I: Score = null; // singleton instance
+class Score extends EgretGameObject {
   text: eui.Label = null;
   textBest: eui.Label = null;
-  textColor: number = 0x000000;
 
   constructor(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: number
   ) {
-    super(x, y, width, height);
-    Score.I = this;
-    this.textColor = color;
-    this.createChildren();
-  }
+    super();
+    this.rect = { x: 10, y: 10, width: 0, height: 0 };
 
-  createChildren() {
-    this.text = Util.myText(
+    this.text = createLabel(
       0,
       0,
       "",
       80,
       0.5,
-      this.textColor,
+      ColorPallet.UI_TEXT,
       true
     );
-    this.compornent.addChild(this.text);
+    this.addEgretDisplayObject(this.text);
 
-    this.textBest = Util.myText(
+    this.textBest = createLabel(
       0,
       this.text.y + 50,
       "",
       80,
       0.5,
-      this.textColor,
+      ColorPallet.UI_TEXT,
       true
     );
-    this.compornent.addChild(this.textBest);
+    this.addEgretDisplayObject(this.textBest);
   }
 
   addDestroyMethod() {
-    if (this.compornent) {
-      this.compornent.removeChildren();
-      this.compornent = null;
-    }
+    super.addDestroyMethod();
     this.text = null;
     this.textBest = null;
   }

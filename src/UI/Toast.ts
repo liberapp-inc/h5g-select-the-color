@@ -6,17 +6,17 @@ interface ToastOptions {
   canHide: boolean;
 }
 
-const DefaultToastOptions : ToastOptions = {
+const DefaultToastOptions: ToastOptions = {
   text: "",
   delay: 3000,
   canHide: false
 }
 
-class Toast extends UICompornent  {
-  private static I:Toast;
+class Toast extends egret.DisplayObjectContainer {
+  private static I: Toast;
 
   public static show(poptions: Partial<ToastOptions>): void {
-    const options : ToastOptions = { ...DefaultToastOptions, ... poptions };
+    const options: ToastOptions = { ...DefaultToastOptions, ...poptions };
     if (!this.I) {
       this.I = new Toast(Main.I.stage.width * 0.6);
     }
@@ -30,7 +30,7 @@ class Toast extends UICompornent  {
       return;
     }
     i.rect.removeChildren();
-    i.compornent.removeChildren();
+    i.removeChildren();
     i.rect = undefined;
     i.label = undefined;
   }
@@ -41,8 +41,8 @@ class Toast extends UICompornent  {
   private currentOptions: ToastOptions;
   private queue: ToastOptions[] = [];
 
-  private constructor(maxWidth:number) {
-    super(0,0,0,0);
+  private constructor(maxWidth: number) {
+    super();
 
     this.rect = new eui.Rect();
     this.rect.alpha = 0;
@@ -52,10 +52,10 @@ class Toast extends UICompornent  {
 
     this.rect.addEventListener(eui.UIEvent.CREATION_COMPLETE, this.onRectCreationComplete, this);
     this.label.addEventListener(eui.UIEvent.RESIZE, this.onLabelResized, this);
-    this.compornent.addChild(this.rect);    
+    this.addChild(this.rect);
   }
 
-  public show(options:ToastOptions) : void {
+  public show(options: ToastOptions): void {
     console.log(`Toast.show`);
     if (this.currentOptions) {
       if (this.currentOptions.canHide) {
@@ -80,7 +80,7 @@ class Toast extends UICompornent  {
       return;
     }
     this.currentTween = egret.Tween.get(this.rect);
-    this.currentTween.to({ alpha: 0 }, 300).call(this.onCompleteHide,this);
+    this.currentTween.to({ alpha: 0 }, 300).call(this.onCompleteHide, this);
   }
 
   private onCompleteHide() {
@@ -89,7 +89,7 @@ class Toast extends UICompornent  {
     this.currentOptions = undefined;
     if (0 === this.queue.length) {
       return;
-    } 
+    }
     const options = this.queue.shift();
     this.show(options);
   }
@@ -122,9 +122,7 @@ class Toast extends UICompornent  {
 
     this.rect.width = this.label.width + 40;
     this.rect.height = this.label.height + 40;
-    this.rect.x = (Main.I.width - this.rect.width)/2;
-    this.rect.y = (Main.I.height - this.rect.height)/2;
+    this.rect.x = (Main.I.width - this.rect.width) / 2;
+    this.rect.y = (Main.I.height - this.rect.height) / 2;
   }
-
-  updateContent() {}
 }

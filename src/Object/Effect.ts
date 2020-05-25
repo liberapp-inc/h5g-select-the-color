@@ -1,36 +1,32 @@
-class EffectLabel extends UICompornent{
-    label:eui.Label = null;
-    labelColor : number = 0x000000;
-    text : string = null;
+class EffectLabel extends EgretGameObject {
+  private animation;
+  private label: eui.Label;
+  private originalY: number;
+  constructor(x: number, y: number, width: number, height: number, color: number, text: string) {
+    super();
+    this.rect = { x, y, width, height };
+    this.animation = 0;
+    this.originalY = 0;
+    this.label = createLabel(x, y, text, 70, 0.5, color, true);
+    this.label.alpha = 0.2;
+    this.label.anchorOffsetX = this.label.width / 2;
+    this.label.anchorOffsetY = this.label.height / 2;
+    this.addEgretDisplayObject(this.label);
+  }
 
+  addDestroyMethod() {
+    this.label = null;
+    super.addDestroyMethod();
+  }
 
-    constructor(x : number, y : number, width : number, height : number, color : number, text:string) {
-        super(x,y,width,height);
-        this.labelColor = color;
-        this.text = text;
-        this.setText(0,0,width,height,text);
-        MyTween.labelEffect(this, this.label, this.label.y-25);
-        
+  updateContent() {
+    if (this.animation < 20) {
+      // 
+    } else if (this.animation < 40) {
+      this.label.y = this.label.y - 1;
+      this.label.alpha = 20;
+    } else {
+      this.destroy();
     }
-
-    setText(x : number, y : number, width : number, height : number, text:string){
-        this.label = Util.myText(x, y, text, 70, 0.5, this.labelColor, true);
-        this.label.alpha = 0.2;
-        this.label.anchorOffsetX = this.label.width/2;
-        this.label.anchorOffsetY = this.label.height/2;
-        this.compornent.addChild( this.label );
-    }
-
-
-    addDestroyMethod() {
-        if(this.compornent){
-            this.compornent.removeChildren();
-        }
-
-        this.label = null;
-        this.text = null;
-    }
-
-    updateContent(){}
-
+  }
 }
