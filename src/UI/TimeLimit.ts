@@ -34,7 +34,7 @@ class TimeLimit extends UICompornent {
 
   private setText() {
     this.timeText = Util.myText(
-      Game.width / 2,
+      TheGame.width / 2,
       0,
       "TIME : " + this.time.toString(),
       80,

@@ -17,8 +17,8 @@ class CreateGameScene extends GameObject {
 
     arrangePanel(){
 
-        const moveX :number = Game.width/4.5;
-        const moveY :number = Game.height*0.3;
+        const moveX :number = TheGame.width/4.5;
+        const moveY :number = TheGame.height*0.3;
 
         //correctPanel番号を設定
         const correctBoxNumberI = Util.randomInt(0,3);

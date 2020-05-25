@@ -6,8 +6,8 @@ class Background extends GameObject{
     constructor() {
         super();
         Background.I = this;
-        this.setCompornent(0,0,Game.width,Game.height);
-        this.setShape(0,0,Game.width, Game.height,this.color);
+        this.setCompornent(0,0,TheGame.width,TheGame.height);
+        this.setShape(0,0,TheGame.width, TheGame.height,this.color);
 
     }
 

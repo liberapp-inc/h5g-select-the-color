@@ -15,7 +15,7 @@ class Description extends UICompornent{
 
     setText(){
         const t :string = "色の違うパネルをタップ";
-        this.text = Util.myText(Game.width/2, Game.height*0.15, t, 90, 0.5, this.textColor, true);
+        this.text = Util.myText(TheGame.width/2, TheGame.height*0.15, t, 90, 0.5, this.textColor, true);
         this.text.anchorOffsetX = this.text.width/2;
         this.text.anchorOffsetY = this.text.height/2;
         this.text.textAlign = egret.HorizontalAlign.CENTER;

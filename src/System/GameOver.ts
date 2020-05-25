@@ -19,8 +19,8 @@ class GameOver extends UICompornent {
     const shape: egret.Shape = Util.setRect(
       0,
       0,
-      Game.width,
-      Game.height,
+      TheGame.width,
+      TheGame.height,
       ColorPallet.GAMEOVER_BACKGROUND,
       0,
       true
@@ -32,8 +32,8 @@ class GameOver extends UICompornent {
 
   setText() {
     this.textGameOver = Util.myText(
-      Game.width / 2,
-      Game.height * 0.4,
+      TheGame.width / 2,
+      TheGame.height * 0.4,
       "あなたの目は…",
       80,
       0.5,
@@ -45,8 +45,8 @@ class GameOver extends UICompornent {
     this.compornent.addChild(this.textGameOver);
 
     this.textScore = Util.myText(
-      Game.width / 2,
-      Game.height * 0.2 + 50,
+      TheGame.width / 2,
+      TheGame.height * 0.2 + 50,
       "",
       80,
       1,
@@ -72,6 +72,6 @@ class GameOver extends UICompornent {
 
   static tap() {
     UILayer.I.remove();
-    GameObject.transit = Game.init;
+    GameObject.transit = TheGame.reinit;
   }
 }

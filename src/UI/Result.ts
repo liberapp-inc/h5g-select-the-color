@@ -30,7 +30,7 @@ class Result extends UICompornent{
 
     setText(){
         const t :string = this.resultComment;
-        this.text = Util.myText(Game.width/2, Game.height*0.5, t, 120, 0.5, this.textColor, true);
+        this.text = Util.myText(TheGame.width/2, TheGame.height*0.5, t, 120, 0.5, this.textColor, true);
         this.text.anchorOffsetX = this.text.width/2;
         this.text.anchorOffsetY = this.text.height/2;
         this.compornent.addChild( this.text );

@@ -24,7 +24,7 @@ class MyTween {
                 egret.Tween.removeTweens(label);
                 Result.roulette = true;
                 result.checkScore();
-                new RetryButton((Game.width - Game.width*0.4)/2, Game.height*0.6, Game.width * 0.4, Game.width*0.18, 80, 0.5, "リトライ");
+                new RetryButton((TheGame.width - TheGame.width*0.4)/2, TheGame.height*0.6, TheGame.width * 0.4, TheGame.width*0.18, 80, 0.5, "リトライ");
             });
     }
     static touchMissPanel(panelComopornent:egret.DisplayObjectContainer, mask:egret.Shape){
