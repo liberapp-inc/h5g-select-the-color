@@ -1,11 +1,11 @@
 enum ColorPallet {
-  //自然
-  WHITE = 0xffffff,
-  RED = 0xf16b6f,
-  BLUE = 0x80bd9e,
-  GREEN = 0x89da59,
-  VERMILION = 0xf98866,
-  BLACK = 0x222222,
+  BACKGROUND = 0x333333,
+  BUTTON_LABEL = 0xeeeeee,
+  BUTTON_BACKGROUND = 0x333333,
+  GAMEOVER_BACKGROUND = 0xeeeeee,
+  GAMEOVER_TEXT = 0x333333,
+  UI_TEXT = 0xeeeeee,
+  RESULT_TEXT_COLOR = 0xeeeeee,
 }
 
 class Main extends eui.UILayer {
@@ -43,8 +43,8 @@ class Game {
     new Background();
     new GameStage();
     new UILayer();
-    new Score(0, 0, 0, 0, ColorPallet.BLACK);
-    new Description(0, 0, 0, 0, ColorPallet.BLACK);
+    new Score(0, 0, 0, 0, ColorPallet.UI_TEXT);
+    new Description(0, 0, 0, 0, ColorPallet.UI_TEXT);
     await Social.init();
     new CreateGameScene();
   }

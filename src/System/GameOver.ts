@@ -2,7 +2,7 @@ class GameOver extends UICompornent {
   static I: GameOver = null;
   textGameOver: eui.Label = null;
   textScore: eui.Label = null;
-  textColor: number = ColorPallet.BLACK;
+  textColor: number = ColorPallet.GAMEOVER_TEXT;
   static gameOverFlag: boolean = false;
 
   constructor(x: number, y: number, width: number, height: number) {
@@ -12,7 +12,7 @@ class GameOver extends UICompornent {
     Score.I.gameOver();
     this.setShape();
     this.setText();
-    new Result(0, 0, 0, 0, ColorPallet.BLACK);
+    new Result(0, 0, 0, 0, ColorPallet.RESULT_TEXT_COLOR);
   }
 
   setShape() {
@@ -21,7 +21,7 @@ class GameOver extends UICompornent {
       0,
       Game.width,
       Game.height,
-      ColorPallet.WHITE,
+      ColorPallet.GAMEOVER_BACKGROUND,
       0,
       true
     );

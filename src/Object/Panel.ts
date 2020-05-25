@@ -16,8 +16,8 @@ class Panel extends GameCompornent{
     }
 
     setShape(x: number, y:number, width:number, height:number,color:number){
-
-        const shape : egret.Shape = Util.setRect(x,y,width,height,color,30,true);
+        const radius = width/2;
+        const shape : egret.Shape = Util.setCircle(x+radius,y+radius,radius,color,true);
         this.compornent.touchEnabled = true;
         this.compornent.addChild(shape);
         this.shapes.push(shape);
@@ -28,7 +28,8 @@ class Panel extends GameCompornent{
     }
 
     setMask(x: number, y:number, width:number, height:number,color:number){
-        this.mask = Util.setRect(x,y,width,height,color,30,true);
+        const radius = width/2;
+        this.mask = Util.setCircle(x+radius,y+radius,radius,color,true);
         this.compornent.addChild(this.mask);
         this.shapes.push(this.mask);
         this.mask.alpha = 0;
@@ -41,7 +42,7 @@ class Panel extends GameCompornent{
         if(!CreateGameScene.I.startFlag){
             if(this.correctFlag){
                 CreateGameScene.I.startFlag = true;
-                new TimeLimit(0,0,0,0,ColorPallet.BLACK);
+                new TimeLimit(0,0,0,0,ColorPallet.UI_TEXT);
                 Panel.retryButton = new RetryButton(Game.width - Game.width*0.26, Game.width*0.16, Game.width * 0.26, Game.width*0.12, 60, 0.5, "リトライ");
                 Description.I.destroy();
                 CreateGameScene.I.resetShape();

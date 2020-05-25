@@ -1,7 +1,7 @@
 class Background extends GameObject{
 
     static I : Background = null;
-    color :number = ColorPallet.WHITE;
+    color :number = ColorPallet.BACKGROUND;
     
     constructor() {
         super();

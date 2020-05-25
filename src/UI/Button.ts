@@ -1,10 +1,10 @@
 abstract class Button extends UICompornent{
 
     indexText : eui.Label = null;
-    indexTextColor : number = ColorPallet.WHITE;
-    shapeColor : number = ColorPallet.BLACK;
+    indexTextColor : number = ColorPallet.BUTTON_LABEL;
+    shapeColor : number = ColorPallet.BUTTON_BACKGROUND;
     mask : egret.Shape = null;
-    maskColor : number = ColorPallet.WHITE;
+    maskColor : number = ColorPallet.BUTTON_LABEL;
     onMask : boolean = false;
 
     constructor(x : number, y : number, width : number, height : number, index : string){
