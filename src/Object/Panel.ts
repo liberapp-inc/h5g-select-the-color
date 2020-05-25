@@ -1,31 +1,45 @@
 class Panel extends GameCompornent{
-
-    public correctFlag : boolean = false;
-    private mask :egret.Shape = null;
-    private shape: egret.Shape  = null;
-    static retryButton : RetryButton = null;
-
-    constructor(x : number, y : number, width : number, height : number, color:number) {
+    private correctFlag : boolean = false;
+    mask :egret.Shape = null;
+    private animationCounter: number;
+    constructor(x : number, y : number, width : number, height : number, {r,g,b}:{r:number,g:number,b:number},correct:boolean) {
         super(x, y, width, height);
-        this.setShape(0, 0, width,height,color);
-        this.setMask(0, 0, width,height,0xffffff);
+        this.correctFlag = correct;
+        this.animationCounter = 0;
+        const plusOrNegative: number = Util.randomInt(0, 1) === 0 ? 1 : -1;
+        const colorDiff = plusOrNegative * (TheGame.MAX_LEVEL - TheGame.currentLevel);
+        let color:number;
+        if (correct) {
+            color = Util.color(r + colorDiff,g + colorDiff,b + colorDiff);
+        } else {
+            color = Util.color(r,g,b);
+        }
+        const needleColor = Util.color(r - colorDiff,g - colorDiff,b - colorDiff);
 
-        //タッチイベントの付与
+        this.setShape(0, 0, width,height,color,needleColor);
+        this.setMask(0, 0, width,height,0xffffff);
         this.compornent.once(egret.TouchEvent.TOUCH_BEGIN, this.touch, this);
         this.compornent.once(egret.TouchEvent.TOUCH_END, this.end, this);
-
     }
 
-    setShape(x: number, y:number, width:number, height:number,color:number){
+    setShape(x: number, y:number, width:number, height:number,color:number,needleColor:number){
         const radius = width/2;
-        this.shape = Util.setCircle(x+radius,y+radius,radius,color,true);
+        const shape = Util.setCircle(x+radius,y+radius,radius,color,true);
         this.compornent.touchEnabled = true;
-        this.compornent.addChild(this.shape);
-        this.shapes.push(this.shape);
+        this.compornent.addChild(shape);
+        this.shapes.push(shape);
+
+        const needle = new egret.Shape();
+        needle.x = x;
+        needle.y = y;
+        needle.graphics.lineStyle(2,needleColor);
+        needle.graphics.moveTo(radius,radius);
+        needle.graphics.lineTo(radius,0);
+        this.compornent.addChild(needle);
+        this.shapes.push(needle);
+
         this.compornent.anchorOffsetX += radius;
         this.compornent.anchorOffsetY += radius;
-        
-
     }
 
     setMask(x: number, y:number, width:number, height:number,color:number){
@@ -37,56 +51,42 @@ class Panel extends GameCompornent{
     }
 
     touch(){
-        if(GameOver.gameOverFlag){
+        if(TheGame.gameOverFlag){
             return;
         }
-        if(!CreateGameScene.I.startFlag){
-            if(this.correctFlag){
-                CreateGameScene.I.startFlag = true;
-                new TimeLimit(0,0,0,0,ColorPallet.UI_TEXT);
-                Panel.retryButton = new RetryButton(TheGame.width - TheGame.width*0.26, TheGame.width*0.16, TheGame.width * 0.26, TheGame.width*0.12, 60, 0.5, "リトライ");
-                Description.I.destroy();
-                CreateGameScene.I.resetShape();
-                CreateGameScene.I.arrangePanel();                
-                return;
-            }
-
+        if (!TheGame.inited) {
+            return;
+        }
+        if(this.correctFlag){
+            TheGame.gotCorrectPanel(this);
         }
         else{
-            if(this.correctFlag){
-                Score.addScore();
-                new EffectLabel(this.compornent.x, this.compornent.y,this.compornent.width,this.compornent.height,0x00ff00,Score.combo.toString() + " COMBO")
-                MyTween.touchCorrectPanel(this.compornent, this.mask);
-                if(CreateGameScene.lightAndDark > 10){
-                    CreateGameScene.lightAndDark -=1;
-                }
-
-            }
-            else{
-                Score.miss();
-                new EffectLabel(this.compornent.x, this.compornent.y,this.compornent.width,this.compornent.height,0x000000,"MISS..")
-                MyTween.touchMissPanel(this.compornent, this.mask);
-                CreateGameScene.lightAndDark = 50;
-            }
-
+            TheGame.gotWrongPanel(this);
         }
-
     }
 
     end(){
-        this.mask.alpha = 0;
+        // this.mask.alpha = 0;
     }
 
-    private animation = 0;
     /// 60FPS 120BPM
     private static ANIMATION_TABLE = [
-0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0.004,0.024,0.044,0.042,0.04,0.038,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.01,0.009,0.008,0.007,0.00599999999999999,0.005,0.004,0.003,0.002,0.001,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
     ];
     updateContent(){
         const t = Panel.ANIMATION_TABLE;
-        const e = 0.95 + t[this.animation];
-        this.shape.scaleX = e;
-        this.shape.scaleY = e;
-        this.animation = (this.animation + 1 ) % t.length;
+        const e = 0.95 + t[this.animationCounter % t.length];
+        this.compornent.scaleX = e;
+        this.compornent.scaleY = e;
+        this.compornent.rotation = this.animationCounter * 360 / TheGame.FRAMES_A_TURN;
+        this.animationCounter += 1;
     }
 }

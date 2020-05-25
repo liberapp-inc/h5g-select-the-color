@@ -21,7 +21,7 @@ class Result extends UICompornent{
         super(x,y,width,height);
         Result.I = this;
         this.textColor = color;
-        this.score = Score.score;
+        this.score = TheGame.score;
         Result.roulette = false;
         this.setText();
         MyTween.result(this, this.text);

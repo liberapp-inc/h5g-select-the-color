@@ -34,14 +34,14 @@ class MyTween {
             .call(()=> {
                 egret.Tween.removeTweens(panelComopornent);
             });
-
+        if (mask) {
         egret.Tween.get(mask) 
             .to({alpha:0.3}, 50, egret.Ease.quartIn)
             .to({alpha:0}, 100)
             .call(()=> {
                 egret.Tween.removeTweens(mask);
             });
-
+        }
     }
     static touchCorrectPanel(panelComopornent:egret.DisplayObjectContainer, mask:egret.Shape){
         egret.Tween.get(panelComopornent) 
@@ -50,7 +50,7 @@ class MyTween {
             .call(()=> {
                 egret.Tween.removeTweens(panelComopornent);
             });
-
+            if (mask) {
         egret.Tween.get(mask) 
             .to({alpha:0.3}, 50, egret.Ease.quartIn)
             .to({alpha:0}, 100)
@@ -59,7 +59,7 @@ class MyTween {
                 CreateGameScene.I.resetShape();
                 CreateGameScene.I.arrangePanel();
             });
-
+            }
     }
 
 }

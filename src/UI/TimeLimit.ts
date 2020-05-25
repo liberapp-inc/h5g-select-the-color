@@ -1,9 +1,4 @@
 class TimeLimit extends UICompornent {
-  static limitTimer: egret.Timer = null;
-  static limitInterval: number = 1000;
-  coinCount: number = 0;
-
-  private time: number = 60;
   private timeText: eui.Label = null;
   private textColor: number = 0x000000;
 
@@ -15,28 +10,15 @@ class TimeLimit extends UICompornent {
     color: number
   ) {
     super(x, y, width, height);
-
-    TimeLimit.limitTimer = new egret.Timer(TimeLimit.limitInterval, 0);
-    TimeLimit.limitTimer.addEventListener(
-      egret.TimerEvent.TIMER,
-      this.timePass,
-      this
-    );
-    TimeLimit.limitTimer.start();
-
     this.textColor = color;
     this.setText();
-  }
-
-  static startTimer() {
-    TimeLimit.limitTimer.start();
   }
 
   private setText() {
     this.timeText = Util.myText(
       TheGame.width / 2,
       0,
-      "TIME : " + this.time.toString(),
+      "",
       80,
       0.5,
       this.textColor,
@@ -46,49 +28,7 @@ class TimeLimit extends UICompornent {
     this.compornent.addChild(this.timeText);
   }
 
-  public resetTimer() {
-    TimeLimit.limitTimer.stop();
-    TimeLimit.limitTimer.removeEventListener(
-      egret.TimerEvent.TIMER,
-      this.timePass,
-      this
-    );
-    TimeLimit.limitTimer = new egret.Timer(TimeLimit.limitInterval, 0);
-    TimeLimit.limitTimer.addEventListener(
-      egret.TimerEvent.TIMER,
-      this.timePass,
-      this
-    );
-    TimeLimit.limitTimer.start();
-  }
-
-  private timePass() {
-    if (GameOver.gameOverFlag) {
-      return;
-    }
-    if (this.time > 0) {
-      this.time -= 1;
-    }
-    if (this.time == 0) {
-      this.time = 0;
-      new GameOver(0, 0, 0, 0);
-      Panel.retryButton.destroy();
-    }
-  }
-
   addDestroyMethod() {
-    GameObject.display.removeEventListener(
-      egret.TouchEvent.TOUCH_BEGIN,
-      this.timePass,
-      this
-    );
-    TimeLimit.limitTimer.stop();
-    TimeLimit.limitTimer.removeEventListener(
-      egret.TimerEvent.TIMER,
-      this.timePass,
-      this
-    );
-
     if (this.compornent) {
       this.compornent.removeChildren();
       this.compornent = null;
@@ -97,6 +37,6 @@ class TimeLimit extends UICompornent {
   }
 
   updateContent() {
-    this.timeText.text = "TIME : " + this.time.toString();
+    this.timeText.text = "TIME : " + TheGame.remaingMiliseconds.toFixed(1);
   }
 }

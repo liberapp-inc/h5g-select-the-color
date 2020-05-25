@@ -3,13 +3,10 @@ class GameOver extends UICompornent {
   textGameOver: eui.Label = null;
   textScore: eui.Label = null;
   textColor: number = ColorPallet.GAMEOVER_TEXT;
-  static gameOverFlag: boolean = false;
 
   constructor(x: number, y: number, width: number, height: number) {
     super(x, y, width, height);
     GameOver.I = this;
-    GameOver.gameOverFlag = true;
-    Score.I.gameOver();
     this.setShape();
     this.setText();
     new Result(0, 0, 0, 0, ColorPallet.RESULT_TEXT_COLOR);

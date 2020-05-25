@@ -46,11 +46,15 @@ class Social {
     static set playerEntry(playerEntry: any) {
         console.log("myBest:", this.myBestEntry, playerEntry);
         this.myBestEntry = playerEntry;
-        Score.bestScore = Social.bestScore;
-        Score.bestRank = Social.bestRank;
+        TheGame.bestScore = Social.bestScore;
+        TheGame.bestRank = Social.bestRank;
     }
 
     static async setScore(score: number) {
+        if (!this.leaderboard) {
+            console.log("ハイスコアを送信しません");
+            return;
+        }
         console.log(`setScore ${score}`);
         Toast.show({ text: `ハイスコアを送信中`, delay: 30000, canHide:true });
         this.playerEntry = await this.leaderboard.setScoreAsync(score);
