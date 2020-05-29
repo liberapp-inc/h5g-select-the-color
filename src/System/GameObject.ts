@@ -21,7 +21,7 @@ abstract class GameObject {
   }
 
   static update() {
-    GameObject.objects.forEach(obj => obj.updateContent());
+    GameObject.objects.forEach(obj => obj.onUpdate());
 
     //destroyFlagがtrueならshapeを削除
     GameObject.objects = GameObject.objects.filter(obj => {
@@ -65,14 +65,17 @@ abstract class GameObject {
     this.children = [];
   }
 
-  destroy() { this.destroyFlag = true; }
+  destroy() {
+    this.destroyFlag = true;
+    this.removeChildren();
+  }
 
-  protected abstract updateContent(): void;
+  protected abstract onUpdate(): void;
 
-  protected addDestroyMethod() { }
+  protected onDestroy() { }
 
   protected delete() {
-    this.addDestroyMethod();
+    this.onDestroy();
     const newArray: GameObject[] = GameObject.objects.filter(obj => obj.destroyFlag !== true);
     GameObject.objects = newArray;
   }
@@ -103,6 +106,7 @@ class EgretGameObject extends GameObject {
     super();
     this.container = new egret.DisplayObjectContainer();
     this.container.name = name;
+    this.visible = visible;
   }
 
   set rect({x, y, width, height}: { x: number, y: number, width: number, height: number }) {
@@ -112,6 +116,18 @@ class EgretGameObject extends GameObject {
     this.container.height = height;
   }
 
+  set position({x, y}: { x: number, y: number }) {
+    this.container.x = x;
+    this.container.y = y;
+  }
+
+  get position(): { x: number, y: number } {
+    return {
+      x: this.container.x,
+      y: this.container.y
+    };
+  }
+
   set visible(value: boolean) {
     this.container.visible = value;
   }
@@ -119,17 +135,25 @@ class EgretGameObject extends GameObject {
   set anchorOffsetX(value: number) {
     this.container.anchorOffsetX = value;
   }
+
   set anchorOffsetY(value: number) {
     this.container.anchorOffsetY = value;
   }
+
   set scaleX(value: number) {
     this.container.scaleX = value;
   }
+
   set scaleY(value: number) {
     this.container.scaleY = value;
   }
+
   set rotation(value: number) {
     this.container.rotation = value;
+  }
+
+  set alpha(value: number) {
+    this.container.alpha = value;
   }
 
   get stageWidth() {
@@ -141,12 +165,16 @@ class EgretGameObject extends GameObject {
   }
 
   addChild(add: GameObject) {
+    this.addChildAt(add, undefined);
+  }
+
+  addChildAt(add: GameObject, index: number) {
     super.addChild(add);
     if (!(add instanceof EgretGameObject)) {
       console.log("addChild", "Not Egret Object");
       return;
     }
-    this.addEgretDisplayObject(add.container);
+    this.addEgretDisplayObject(add.container, index);
   }
 
   removeChild(remove: GameObject) {
@@ -164,8 +192,12 @@ class EgretGameObject extends GameObject {
     super.removeChildren();
   }
 
-  addEgretDisplayObject(add: egret.DisplayObject): void {
-    this.container.addChild(add);
+  addEgretDisplayObject(add: egret.DisplayObject, index?: number): void {
+    if (index === undefined) {
+      this.container.addChild(add);
+    } else {
+      this.container.addChildAt(add, index);
+    }
   }
 
   removeEgretDisplayObject(remove: egret.DisplayObject) {
@@ -177,16 +209,23 @@ class EgretGameObject extends GameObject {
     this.container.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
   }
 
-  protected addDestroyMethod() {
+  disableTouch() {
+    this.container.touchEnabled = false;
+    this.container.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
+  }
+
+  protected onDestroy() {
     if (this.container.hasEventListener) {
       this.container.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
     }
-
-    super.addDestroyMethod();
+    if (this.container.parent) {
+      this.container.parent.removeChild(this.container);
+    }
+    super.onDestroy();
   }
 
-  protected onTapped() { }
-  protected updateContent() { }
+  protected onTapped() { console.warn("onTapped: unhandled"); }
+  protected onUpdate() { console.warn("updateContent: unhandled"); }
 
   protected addAsLayer() {
     EgretGameObject.mainStage.addChild(this.container);

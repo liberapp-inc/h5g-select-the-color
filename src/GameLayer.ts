@@ -6,4 +6,6 @@ class GameLayer extends EgretLayerGameObject {
     this.addChild(new Background());
     this.addChild(this.panels = new Panels());
   }
+
+  onUpdate() { }
 }

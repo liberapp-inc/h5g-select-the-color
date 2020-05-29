@@ -2,7 +2,7 @@ class Description extends EgretGameObject {
   constructor() {
     super(false);
 
-    const text = createLabel(this.stageWidth / 2, this.stageHeight * 0.15, "色の違うパネルをタップ", 90, 0.5, ColorPallet.UI_TEXT, true);
+    const text = createLabelOld(this.stageWidth / 2, this.stageHeight * 0.15, "色の違うパネルをタップ", 90, 0.5, ColorPallet.UI_TEXT, true);
     text.anchorOffsetX = text.width / 2;
     text.anchorOffsetY = text.height / 2;
     text.textAlign = egret.HorizontalAlign.CENTER;
@@ -10,5 +10,5 @@ class Description extends EgretGameObject {
     // MyTween.textFlash(this.text);
   }
 
-  updateContent() { }
+  onUpdate() { }
 }

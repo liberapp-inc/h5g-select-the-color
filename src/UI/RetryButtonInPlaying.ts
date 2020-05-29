@@ -19,5 +19,5 @@ class RetryButtonInPlaying extends Button {
     // TheGame.retry();
   }
 
-  updateContent() { }
+  onUpdate() { }
 }

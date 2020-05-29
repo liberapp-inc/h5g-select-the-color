@@ -7,19 +7,19 @@ class EffectLabel extends EgretGameObject {
     this.rect = { x, y, width, height };
     this.animation = 0;
     this.originalY = 0;
-    this.label = createLabel(x, y, text, 70, 0.5, color, true);
+    this.label = createLabelOld(x, y, text, 70, 0.5, color, true);
     this.label.alpha = 0.2;
     this.label.anchorOffsetX = this.label.width / 2;
     this.label.anchorOffsetY = this.label.height / 2;
     this.addEgretDisplayObject(this.label);
   }
 
-  addDestroyMethod() {
+  onDestroy() {
     this.label = null;
-    super.addDestroyMethod();
+    super.onDestroy();
   }
 
-  updateContent() {
+  onUpdate() {
     if (this.animation < 20) {
       // 
     } else if (this.animation < 40) {

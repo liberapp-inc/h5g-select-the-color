@@ -5,5 +5,5 @@ class Background extends EgretGameObject {
     this.addEgretDisplayObject(o);
   }
 
-  updateContent() { }
+  onUpdate() { }
 }

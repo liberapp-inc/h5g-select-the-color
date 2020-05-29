@@ -7,7 +7,7 @@ abstract class Button extends EgretGameObject {
     const shpae = createRectShape(x, y, width, height, backgroundColor, 70);
     this.addEgretDisplayObject(shpae);
 
-    const innerText = createLabel(x, y, index, size, ratio, textColor, true);
+    const innerText = createLabelOld(x, y, index, size, ratio, textColor, true);
     innerText.anchorOffsetX = innerText.width / 2;
     innerText.anchorOffsetY = innerText.height / 2;
     innerText.x += width / 2;
@@ -20,8 +20,8 @@ abstract class Button extends EgretGameObject {
     this.enableTouch();
   }
 
-  addDestroyMethod() {
+  onDestroy() {
     this.innerText = null;
-    super.addDestroyMethod();
+    super.onDestroy();
   }
 }

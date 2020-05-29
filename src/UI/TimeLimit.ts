@@ -4,7 +4,7 @@ class TimeLimit extends EgretGameObject {
   constructor(
   ) {
     super(false);
-    this.timeText = createLabel(
+    this.timeText = createLabelOld(
       this.stageWidth / 2,
       0,
       "",
@@ -17,7 +17,7 @@ class TimeLimit extends EgretGameObject {
     this.addEgretDisplayObject(this.timeText);
   }
 
-  updateContent() {
+  onUpdate() {
     this.timeText.text = "TIME : " + TheGame.remaingMiliseconds.toFixed(1);
   }
 }
