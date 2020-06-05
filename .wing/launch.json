@@ -6,24 +6,25 @@
 			"type": "chrome",
 			"request": "launch",
 			"file": "index.html",
+			//"url": "http://mysite.com/index.html",
 			"runtimeExecutable": "${execPath}",
-			"useBuildInServer": true,
 			"sourceMaps": true,
 			"webRoot": "${workspaceRoot}",
 			"preLaunchTask":"build",
-			"port":5056
+			"port":5278
 		},
 		{
-			"name": "Launch Chrome",
+			"name": "Chrome",
 			"type": "chrome",
 			"request": "launch",
 			"file": "index.html",
-			"useBuildInServer": true,
+			//"url": "http://mysite.com/index.html",
+			"runtimeExecutable": "",
 			"sourceMaps": true,
 			"webRoot": "${workspaceRoot}",
 			"preLaunchTask":"build",
 			"userDataDir":"${tmpdir}",
-			"port":5056
+			"port":5278
 		}
 	]
 }

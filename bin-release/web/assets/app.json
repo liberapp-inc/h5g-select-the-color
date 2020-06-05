@@ -1,8 +1,8 @@
 {
-  "title": "老眼チェッカー",
-  "lead": "1つだけ違う色をタップ高得点を狙え",
-  "description": "【操作方法】\nパネルをタップ\n\n12枚のパネルの中から1つだけ違う色のパネルをタップしてください。間違えるとコンボがリセットされます。",
-  "copyright": "SqumariGames, Liberapp",
+  "title": "老眼診断",
+  "lead": "あなたの眼年齢は何才ですか？",
+  "description": "あなたの眼年齢は何才ですか？老眼だったらどうしよう？！えーーわたしの眼年齢って100才?!\n【操作方法】\n複数のパネルの中から1つだけ違う色のパネルをタップしよう！間違えずにコンボし続けるとハイスコアだ",
+  "copyright": "Liberapp, SqumariGames",
   "useLeaderboard": true,
   "sdkVersion": "0.9",
   "leaderboards": [

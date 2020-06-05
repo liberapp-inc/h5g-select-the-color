@@ -22,8 +22,8 @@ class ScoreUI extends EgretGameObject {
   onUpdate() {
     setLabelText(this.score, comma(TheGame.score));
     let best;
-    if (TheGame.bestRank) {
-      best = `BEST ${comma(best)}/#${comma(TheGame.bestRank)}`;
+    if (TheGame.player && TheGame.player.bestRank) {
+      best = `BEST ${comma(TheGame.player.bestScore)} ${comma(TheGame.player.bestRank)}位`;
     } else {
       best = `BEST 0`;
     }

@@ -20,6 +20,6 @@
 
 1. 最初に、`bin-release/web/` に `app.json`を用意してください。
 2. Egret Launcherで名前を指定してパブリッシュしてください
-3. EgretWingの画面下部の端末タブ(コマンドライン)で `PowerShell -ExecutionPolicy RemoteSigned .\archive.ps1 <名前>` を叩いてください
+3. EgretWingの画面下部の端末タブ(コマンドライン)で `PowerShell -ExecutionPolicy RemoteSigned .\publish.ps1 <名前>` を叩いてください
 
 

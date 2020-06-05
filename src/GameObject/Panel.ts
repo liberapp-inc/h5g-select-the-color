@@ -7,9 +7,9 @@ class Panel extends EgretGameObject {
   private color: number;
   private animationManager: AnimationManager<Panel, PanelAnimationStatus>;
   private radius: number;
-  private level: Level;
+  private level: TurnOption;
 
-  constructor(level: Level, p: { x, y }, rgb: RGB, correct: boolean, initialState: "waiting" | "in") {
+  constructor(level: TurnOption, p: { x, y }, rgb: RGB, correct: boolean, initialState: "waiting" | "in") {
     super();
     this.position = p;
     this.level = level;

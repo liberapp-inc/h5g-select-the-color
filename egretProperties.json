@@ -23,11 +23,15 @@
     },
     {
       "name": "promise"
+    },
+    {
+      "name": "liberapp",
+      "path": "./liberapp"
     }
   ],
   "urlParams": {
-      "t": "7d1b61d1-5fcc-4d33-a20d-bea290120bc9",
-      "u": "f01d616b-f0bc-4ab0-80e1-04e10888ee3d",
-      "a": "2a2ef67d-0d5a-41e4-8307-69b67f0f552b"
+    "t": "7d1b61d1-5fcc-4d33-a20d-bea290120bc9",
+    "u": "f01d616b-f0bc-4ab0-80e1-04e10888ee3d",
+    "a": "2a2ef67d-0d5a-41e4-8307-69b67f0f552b"
   }
 }

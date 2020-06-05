@@ -53,10 +53,12 @@ class Toast extends egret.DisplayObjectContainer {
     this.rect.addEventListener(eui.UIEvent.CREATION_COMPLETE, this.onRectCreationComplete, this);
     this.label.addEventListener(eui.UIEvent.RESIZE, this.onLabelResized, this);
     this.addChild(this.rect);
+
+    egret.MainContext.instance.stage.addChild(this);
   }
 
   public show(options: ToastOptions): void {
-    console.log(`Toast.show`);
+    console.log(`Toast.show`, options);
     if (this.currentOptions) {
       if (this.currentOptions.canHide) {
         this.currentTween.setPaused(true);
@@ -70,6 +72,8 @@ class Toast extends egret.DisplayObjectContainer {
     }
     this.currentOptions = options;
     this.toastText = options.text;
+    this.visible = true;
+    egret.MainContext.instance.stage.setChildIndex(this, -1);
     this.currentTween = egret.Tween.get(this.rect);
     this.currentTween.to({ alpha: 1 }, 300).wait(options.delay).call(this.onStartHide, this);
   }
@@ -87,6 +91,8 @@ class Toast extends egret.DisplayObjectContainer {
     console.log(`Toast.onCompleteHide`);
     this.currentTween = undefined;
     this.currentOptions = undefined;
+    this.visible = false;
+    egret.MainContext.instance.stage.setChildIndex(this, 0);
     if (0 === this.queue.length) {
       return;
     }

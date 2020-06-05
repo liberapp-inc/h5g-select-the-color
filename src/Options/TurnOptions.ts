@@ -1,20 +1,11 @@
-type ComboType = "single" | "combo1" | "combo2" | "combo3" | "combo4";
-const ComboTypeTable: ComboType[] = ["single", "combo1", "combo2", "combo2", "combo3", "combo3", "combo3", "combo4"];
 
-function comboType(numberOfCombos: number): ComboType {
-  if (ComboTypeTable.length <= numberOfCombos) {
-    numberOfCombos = ComboTypeTable.length - 1;
-  }
-  return ComboTypeTable[numberOfCombos];
-}
-
-interface Level {
+interface TurnOption {
   rowcol: [number, number];
   framesOfTurn: number;
   depthColor: number;
 }
 
-const Levels: Level[] = [
+const TurnOptions: TurnOption[] = [
   // 0
   { rowcol: [2, 2], framesOfTurn: FramesOf4thNote * 4, depthColor: 50 },
   // 01-10

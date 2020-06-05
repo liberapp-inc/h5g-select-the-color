@@ -1,26 +1,43 @@
+
 class Social {
+
   private static sdk;
   private static leaderboard;
-  private static myBestEntry;
 
-  static async init() {
+  static async init(online: boolean): Promise<Player> {
+    if (!online) {
+      return { ...AnonymousPlayerProfile, ...InitialPlayerData, ...InitialPlayerLeaderboard };
+    }
+
     const sdk = await Sdk.loadSdk();
     this.sdk = sdk;
     Toast.show({ text: "ログイン中・・・", delay: 30000, canHide: true });
     await sdk.initializeAsync();
     await sdk.startGameAsync();
-    Toast.show({ text: `${this.playerName}さんようこそ！`, delay: 30000, canHide: true });
+
+    const player = {
+      name: sdk.player.getName(),
+      avatarUrl: sdk.player.getPhoto()
+    }
+
+    Toast.show({ text: `${player.name}さんようこそ！`, delay: 30000, canHide: true });
     this.leaderboard = await sdk.getLeaderboardAsync("default");
-    const [entryCount, entries, playerEntry] = await Promise.all([
+    const [entryCount, entries, playerEntry, rawData] = await Promise.all([
       this.leaderboard.getEntryCountAsync(),
       this.leaderboard.getEntriesAsync(3, 0),
-      this.leaderboard.getPlayerEntryAsync()
+      this.leaderboard.getPlayerEntryAsync(),
+      this.sdk.player.getDataAsync(Object.keys(InitialPlayerData))
     ]);
-    this.playerEntry = playerEntry;
-
-    if (this.hasBest) {
-      Toast.show({ text: `今のところ${entryCount}人中${this.bestRank}位です`, delay: 3000 });
+    const playerData = decodePlayerData(rawData);
+    let playerLeaderboard: PlayerLeaderboard;
+    if (playerEntry) {
+      playerLeaderboard = {
+        bestRank: playerEntry.getRank(),
+        bestScore: playerEntry.getScore(),
+      };
+      Toast.show({ text: `今のところ${entryCount}人中${playerLeaderboard.bestRank}位です`, delay: 3000 });
     } else {
+      playerLeaderboard = InitialPlayerLeaderboard;
       const p1 = entries[0];
       if (p1) {
         console.log(p1);
@@ -29,39 +46,39 @@ class Social {
         Toast.show({ text: `${entryCount}人が遊んでいます!\n一番は${p1Name}さん\nスコアは${p1Score}です`, delay: 3000 });
       }
     }
+    return { ...player, ...playerData, ...playerLeaderboard };
   }
 
-  static get hasBest(): boolean {
-    return !!this.myBestEntry;
-  }
-
-  static get bestScore(): number {
-    return this.hasBest ? this.myBestEntry.getScore() : 0;
-  }
-
-  static get bestRank(): number {
-    return this.hasBest ? this.myBestEntry.getRank() : undefined;
-  }
-
-  static set playerEntry(playerEntry: any) {
-    console.log("myBest:", this.myBestEntry, playerEntry);
-    this.myBestEntry = playerEntry;
-    TheGame.setBest({ bestScore: Social.bestScore, bestRank: Social.bestRank });
-  }
-
-  static async setScore(score: number): Promise<void> {
-    if (!this.leaderboard) {
-      console.log("ハイスコアを送信しません");
+  static updateData(player: Player): Promise<void> {
+    console.log(`updateData ${player}`);
+    if (!this.sdk || !this.sdk.player) {
+      console.log("データを保存しません");
       return;
     }
-    console.log(`setScore ${score}`);
-    Toast.show({ text: `ハイスコアを送信中`, delay: 30000, canHide: true });
-    const playerEntry = await this.leaderboard.setScoreAsync(score);
-    Toast.show({ text: `順位は${this.bestRank}位でした`, delay: 3000 });
-    return
+    const data: PlayerData = {
+      commulativeExp: player.commulativeExp,
+      commulativeScore: player.commulativeScore,
+      level: player.level,
+      stage: player.stage
+    };
+    const promise: Promise<any> = this.sdk.player.setDataAsync(data);
+    promise.then(() => console.log("保存完了"));
   }
 
-  static get playerName() {
-    return this.sdk.player.getName() || "名無し";
+  static async setScore(score: number): Promise<{ bestScore: number, bestRank: number } | undefined> {
+    console.log(`setScore ${score}`);
+    if (!this.leaderboard) {
+      console.log("ハイスコアを送信しません");
+      return undefined;
+    }
+
+    Toast.show({ text: `ハイスコアを送信中`, delay: 30000, canHide: true });
+    const playerEntry = await this.leaderboard.setScoreAsync(score);
+
+    const bestScore = playerEntry.getScore();
+    const bestRank = playerEntry.getRank();
+    Toast.show({ text: `順位は${bestRank}位でした`, delay: 3000 });
+
+    return { bestScore, bestRank };
   }
 }

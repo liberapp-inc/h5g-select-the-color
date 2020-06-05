@@ -19,7 +19,7 @@ class Panels extends EgretGameObject {
   }
 
   private createPanels(initialState: "waiting" | "in") {
-    const [, level] = TheGame.currentLevel
+    const [, level] = TheGame.currentTurn
     console.log("createPanels:", level);
 
     const [row, col] = level.rowcol;
