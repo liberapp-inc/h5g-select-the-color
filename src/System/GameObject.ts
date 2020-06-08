@@ -100,60 +100,64 @@ class EgretGameObject extends GameObject {
     return EgretGameObject._stageHeight;
   }
 
-  private container: egret.DisplayObjectContainer;
+  private container_: egret.DisplayObjectContainer;
 
   constructor(visible: boolean = true) {
     super();
-    this.container = new egret.DisplayObjectContainer();
-    this.container.name = name;
+    this.container_ = new egret.DisplayObjectContainer();
+    this.container_.name = name;
     this.visible = visible;
   }
 
   set rect({x, y, width, height}: { x: number, y: number, width: number, height: number }) {
-    this.container.x = x;
-    this.container.y = y;
-    this.container.width = width;
-    this.container.height = height;
+    this.container_.x = x;
+    this.container_.y = y;
+    this.container_.width = width;
+    this.container_.height = height;
   }
 
   set position({x, y}: { x: number, y: number }) {
-    this.container.x = x;
-    this.container.y = y;
+    this.container_.x = x;
+    this.container_.y = y;
   }
 
   get position(): { x: number, y: number } {
     return {
-      x: this.container.x,
-      y: this.container.y
+      x: this.container_.x,
+      y: this.container_.y
     };
   }
 
   set visible(value: boolean) {
-    this.container.visible = value;
+    this.container_.visible = value;
   }
 
   set anchorOffsetX(value: number) {
-    this.container.anchorOffsetX = value;
+    this.container_.anchorOffsetX = value;
   }
 
   set anchorOffsetY(value: number) {
-    this.container.anchorOffsetY = value;
+    this.container_.anchorOffsetY = value;
   }
 
   set scaleX(value: number) {
-    this.container.scaleX = value;
+    this.container_.scaleX = value;
   }
 
   set scaleY(value: number) {
-    this.container.scaleY = value;
+    this.container_.scaleY = value;
   }
 
   set rotation(value: number) {
-    this.container.rotation = value;
+    this.container_.rotation = value;
   }
 
   set alpha(value: number) {
-    this.container.alpha = value;
+    this.container_.alpha = value;
+  }
+
+  get container(): egret.DisplayObjectContainer {
+    return this.container_;
   }
 
   get stageWidth() {
@@ -174,7 +178,7 @@ class EgretGameObject extends GameObject {
       console.log("addChild", "Not Egret Object");
       return;
     }
-    this.addEgretDisplayObject(add.container, index);
+    this.addEgretDisplayObject(add.container_, index);
   }
 
   removeChild(remove: GameObject) {
@@ -183,43 +187,43 @@ class EgretGameObject extends GameObject {
       return;
     }
     console.log("removeChild", "Egret Object", remove);
-    this.removeEgretDisplayObject(remove.container);
+    this.removeEgretDisplayObject(remove.container_);
     super.removeChild(remove);
   }
 
   removeChildren() {
-    this.container.removeChildren();
+    this.container_.removeChildren();
     super.removeChildren();
   }
 
   addEgretDisplayObject(add: egret.DisplayObject, index?: number): void {
     if (index === undefined) {
-      this.container.addChild(add);
+      this.container_.addChild(add);
     } else {
-      this.container.addChildAt(add, index);
+      this.container_.addChildAt(add, index);
     }
   }
 
   removeEgretDisplayObject(remove: egret.DisplayObject) {
-    this.container.removeChild(remove);
+    this.container_.removeChild(remove);
   }
 
   enableTouch() {
-    this.container.touchEnabled = true;
-    this.container.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
+    this.container_.touchEnabled = true;
+    this.container_.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
   }
 
   disableTouch() {
-    this.container.touchEnabled = false;
-    this.container.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
+    this.container_.touchEnabled = false;
+    this.container_.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
   }
 
   protected onDestroy() {
-    if (this.container.hasEventListener) {
-      this.container.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
+    if (this.container_.hasEventListener) {
+      this.container_.removeEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTapped, this);
     }
-    if (this.container.parent) {
-      this.container.parent.removeChild(this.container);
+    if (this.container_.parent) {
+      this.container_.parent.removeChild(this.container_);
     }
     super.onDestroy();
   }
@@ -228,7 +232,7 @@ class EgretGameObject extends GameObject {
   protected onUpdate() { console.warn("updateContent: unhandled"); }
 
   protected addAsLayer() {
-    EgretGameObject.mainStage.addChild(this.container);
+    EgretGameObject.mainStage.addChild(this.container_);
   }
 }
 

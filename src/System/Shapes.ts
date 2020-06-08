@@ -1,9 +1,8 @@
 function createRectShape(x: number, y: number, width: number, height: number, color: number, round: number): egret.Shape {
   const shape: egret.Shape = new egret.Shape();
-  shape.x = x;
-  shape.y = y;
+
   shape.graphics.beginFill(color);
-  shape.graphics.drawRoundRect(0, 0, width, height, round);
+  shape.graphics.drawRoundRect(x, y, width, height, round);
   shape.graphics.endFill();
   return shape;
 }

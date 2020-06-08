@@ -35,6 +35,7 @@ const InitialPlayerLeaderboard: PlayerLeaderboard = {
 type Player = PlayerProfile & PlayerData & PlayerLeaderboard;
 
 function decodePlayerData(rawData: any): PlayerData {
+  console.log("decodePlayerData", rawData);
   if (!rawData) {
     console.error("decodePlayerData: Empty");
     return InitialPlayerData;
@@ -47,6 +48,11 @@ function decodePlayerData(rawData: any): PlayerData {
     console.error("decodePlayerData: Invalid, ", rawData);
     return InitialPlayerData;
   }
-  return rawData;
+  return {
+    level: Math.max(1, Math.min(Math.floor(rawData.level), LevelOptions.length + 1)),
+    stage: Math.max(1, Math.min(Math.floor(rawData.stage), StageOptions.length + 1)),
+    commulativeExp: Math.floor(rawData.commulativeExp),
+    commulativeScore: Math.floor(rawData.commulativeScore)
+  };
 }
 

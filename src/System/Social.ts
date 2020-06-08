@@ -14,7 +14,10 @@ class Social {
     Toast.show({ text: "ログイン中・・・", delay: 30000, canHide: true });
     await sdk.initializeAsync();
     await sdk.startGameAsync();
-
+    if (!this.sdk.player) {
+      this.sdk = undefined;
+      return;
+    }
     const player = {
       name: sdk.player.getName(),
       avatarUrl: sdk.player.getPhoto()

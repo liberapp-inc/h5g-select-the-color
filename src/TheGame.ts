@@ -3,7 +3,7 @@ type Scene = "loading" | "title" | "playing" | "gameover";
 class TheGame {
   static readonly MAX_LEVEL: number = 50;
   static readonly FPS = 60;
-  static readonly FRAMES_A_SESSION = FramesOf4thNote * 100;// TheGame.FRAMES_A_TURN * 16;
+  static readonly FRAMES_A_SESSION = FramesOf4thNote * 100;
   static gameLayer: GameLayer;
   static uiLayer: UILayer;
 
@@ -33,7 +33,7 @@ class TheGame {
     TheGame.uiLayer = new UILayer();
 
     egret.startTick(TheGame.tickLoop, TheGame);
-    TheGame.player_ = await Social.init(false);
+    TheGame.player_ = await Social.init(true);
     TheGame.gotoTitle();
   }
 
@@ -65,7 +65,7 @@ class TheGame {
   static gotoResult() {
     TheGame.scene_ = "gameover";
     const player = TheGame.player;
-
+    console.log("**************", player);
     const result = {
       commulativeExp: {
         from: player.commulativeExp,
@@ -79,15 +79,15 @@ class TheGame {
       isStageUped: false,
     };
 
-    if (LevelOptions[player.level].expThreshold <= player.commulativeExp) {
+    if (LevelOptions[player.level - 1 + 1].expThreshold <= player.commulativeExp) {
       console.log("LEVELUP");
-      player.level += (player.level + 1) % LevelOptions.length;
+      player.level = Math.min(player.level + 1, LevelOptions.length + 1);
       result.isLevelUped = true;
     }
 
-    if (StageOptions[player.stage - 1].scoreThreshold <= player.commulativeScore) {
+    if (StageOptions[player.stage - 1 + 1].scoreThreshold <= player.commulativeScore) {
       console.log("NEXT STAGE");
-      player.stage = (player.stage + 1) % StageOptions.length;
+      player.stage = Math.min(player.stage + 1, StageOptions.length + 1);
       result.isStageUped = true;
     }
     Social.updateData(player);
@@ -119,7 +119,7 @@ class TheGame {
 
     TheGame.gameLayer.panels.gameover();
     TheGame.uiLayer.score.visible = false;
-    TheGame.uiLayer.resultOverlay.show();
+    TheGame.uiLayer.resultOverlay.show(TheGame.lastResult_);
   }
 
 
@@ -173,12 +173,14 @@ class TheGame {
     if (TheGame.scene !== "playing") {
       TheGame.start();
     }
-    let plus = TheGame.currentTurn_;
+    const boost = LevelOptions[TheGame.player.level - 1].scoreBoost;
+    console.log("boost", boost);
+    let plus = TheGame.currentTurn_ * (1 + boost);
     TheGame.combo_++;
     if (1 < TheGame.combo_) {
       plus *= TheGame.combo_;
     }
-    TheGame.score_ += plus;
+    TheGame.score_ += Math.floor(plus);
     // new EffectLabel(touched.compornent.x, touched.compornent.y,touched.compornent.width,touched.compornent.height,0x00ff00,TheGame.combo.toString() + " COMBO")
 
     TheGame.currentTurn_ = Math.min((TheGame.currentTurn_ + 1), TheGame.MAX_LEVEL);

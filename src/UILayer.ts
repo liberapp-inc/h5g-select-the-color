@@ -4,6 +4,7 @@ class UILayer extends EgretLayerGameObject {
   description: Description;
   timelimit: TimeLimit;
 
+
   constructor() {
     super();
     this.addChild(this.score = new ScoreUI());

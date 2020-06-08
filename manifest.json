@@ -10,8 +10,8 @@
 	],
 	"game": [
 		"bin-debug/System/GameObject.js",
-		"bin-debug/System/Animation.js",
 		"bin-debug/System/Button.js",
+		"bin-debug/System/Animation.js",
 		"bin-debug/System/Easing.js",
 		"bin-debug/Result.js",
 		"bin-debug/TheGame.js",
@@ -26,8 +26,8 @@
 		"bin-debug/Options/Levels.js",
 		"bin-debug/Options/Stages.js",
 		"bin-debug/Options/TurnOptions.js",
-		"bin-debug/GameLayer.js",
 		"bin-debug/ColorPallet.js",
+		"bin-debug/GameLayer.js",
 		"bin-debug/Main.js",
 		"bin-debug/System/Format.js",
 		"bin-debug/Player.js",
@@ -38,9 +38,11 @@
 		"bin-debug/System/Shapes.js",
 		"bin-debug/System/Social.js",
 		"bin-debug/UI/Description.js",
+		"bin-debug/UI/LevelupOverlay.js",
 		"bin-debug/UI/ResultOverlay.js",
 		"bin-debug/UI/RetryButtonInPlaying.js",
 		"bin-debug/UI/ScoreUI.js",
+		"bin-debug/UI/StageupOverlay.js",
 		"bin-debug/UI/TimeLimit.js",
 		"bin-debug/UI/Toast.js"
 	]
